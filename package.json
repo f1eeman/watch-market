@@ -1,0 +1,52 @@
+{
+  "name": "landing-template",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "packageManager": "yarn@1.22.22",
+  "scripts": {
+    "preinstall": "npx only-allow yarn",
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:styles": "stylelint \"**/*.{css,astro}\"",
+    "lint:styles:fix": "stylelint \"**/*.{css,astro}\" --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "astro check",
+    "test:browser": "playwright test",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "~7.1.6",
+    "gsap": "~3.15.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "~0.9.10",
+    "@eslint/js": "~10.0.1",
+    "@playwright/test": "~1.62.1",
+    "@types/node": "~24.10.1",
+    "@typescript-eslint/parser": "~8.66.0",
+    "eslint": "~10.8.0",
+    "eslint-config-prettier": "~10.1.8",
+    "eslint-import-resolver-typescript": "~4.4.5",
+    "eslint-plugin-astro": "~3.1.0",
+    "eslint-plugin-import-x": "~4.17.1",
+    "eslint-plugin-jsx-a11y": "~6.10.2",
+    "globals": "~17.9.0",
+    "husky": "~9.1.7",
+    "lint-staged": "~17.3.0",
+    "postcss-html": "~2.0.0",
+    "prettier": "~3.9.6",
+    "prettier-plugin-astro": "~0.14.1",
+    "stylelint": "~17.14.1",
+    "stylelint-config-html": "~2.0.0",
+    "stylelint-config-standard": "~40.0.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "~8.66.0"
+  }
+}

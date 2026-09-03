@@ -1,0 +1,87 @@
+---
+const YEAR = new Date().getFullYear()
+
+const COMPANY = 'Название организации'
+const EMAIL = 'mail@example.invalid'
+const PHONE = { href: '+70000000000', label: '+7 000 000 00 00' }
+---
+
+<footer class="footer">
+  <div class="container inner">
+    <section class="contacts" id="contacts" aria-labelledby="contacts-title">
+      <h2 class="title" id="contacts-title">Контакты</h2>
+      <ul class="list">
+        <li>
+          <a class="link" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+        </li>
+        <li>
+          <a class="link" href={`tel:${PHONE.href}`}>{PHONE.label}</a>
+        </li>
+      </ul>
+    </section>
+
+    <p class="copyright">© {YEAR} {COMPANY}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: 40px;
+    background-color: var(--color-surface-inverse);
+    color: var(--color-text-inverse);
+  }
+
+  .inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .title {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-block-start: 16px;
+  }
+
+  .link {
+    color: var(--color-text-inverse-muted);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover {
+      color: var(--color-text-inverse);
+    }
+  }
+
+  .link:focus-visible {
+    outline: 2px solid var(--color-text-inverse);
+    outline-offset: 3px;
+  }
+
+  .link:active {
+    color: var(--color-text-inverse);
+    transition-duration: 90ms;
+  }
+
+  .copyright {
+    color: var(--color-text-inverse-muted);
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .link {
+      transition: none;
+    }
+  }
+</style>

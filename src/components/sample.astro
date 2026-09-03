@@ -1,0 +1,67 @@
+---
+const CARDS = [
+  { title: 'Первая', text: 'Появление секции ведёт reveal.ts по data-reveal.' },
+  { title: 'Вторая', text: 'Ритм между секциями раздаёт data-region.' },
+  { title: 'Третья', text: 'Ширину колонки держит .container.' },
+]
+---
+
+<section class="section" id="sample" data-region>
+  <div class="container">
+    <h2 class="title" data-reveal="up">Демонстрационный раздел</h2>
+
+    <ul class="cards" data-reveal="up" data-reveal-stagger>
+      {
+        CARDS.map((card) => (
+          <li class="card">
+            <h3 class="card-title">{card.title}</h3>
+            <p class="card-text">{card.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .title {
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .cards {
+    display: grid;
+    gap: 16px;
+    margin-block-start: var(--block-gap);
+  }
+
+  .card {
+    padding: 24px;
+    border-radius: var(--radius-control);
+    background-color: var(--color-surface-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-title {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .card-text {
+    margin-block-start: 8px;
+    color: var(--color-text-muted);
+  }
+
+  @media (width >= 1024px) {
+    .title {
+      font-size: 40px;
+    }
+
+    .cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+  }
+</style>

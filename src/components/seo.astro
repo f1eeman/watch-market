@@ -1,0 +1,87 @@
+---
+interface Props {
+  title: string
+  description: string
+}
+
+const { title, description } = Astro.props
+
+const site = Astro.site as URL
+const canonical = new URL(Astro.url.pathname, site)
+
+const SITE_NAME = 'Название продукта'
+const OG_IMAGE = { path: '/og-image.png', width: 1200, height: 630 }
+const ogImage = new URL(OG_IMAGE.path, site)
+
+const ORGANIZATION = {
+  name: 'Название организации',
+  legalName: 'Полное наименование организации',
+  url: 'https://example.invalid/',
+  telephone: '+70000000000',
+  email: 'mail@example.invalid',
+  country: 'KZ',
+}
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${canonical.origin}/#organization`,
+      name: ORGANIZATION.name,
+      legalName: ORGANIZATION.legalName,
+      url: ORGANIZATION.url,
+      logo: new URL('/favicon.svg', site).href,
+      brand: { '@type': 'Brand', name: SITE_NAME },
+      address: {
+        '@type': 'PostalAddress',
+        addressCountry: ORGANIZATION.country,
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'sales',
+        telephone: ORGANIZATION.telephone,
+        email: ORGANIZATION.email,
+        areaServed: ORGANIZATION.country,
+        availableLanguage: 'ru',
+      },
+      sameAs: [ORGANIZATION.url],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${canonical.origin}/#website`,
+      url: canonical.origin,
+      name: SITE_NAME,
+      description,
+      inLanguage: 'ru',
+      publisher: { '@id': `${canonical.origin}/#organization` },
+    },
+  ],
+}
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical.href} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:url" content={canonical.href} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage.href} />
+<meta property="og:image:width" content={String(OG_IMAGE.width)} />
+<meta property="og:image:height" content={String(OG_IMAGE.height)} />
+<meta property="og:image:alt" content={title} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage.href} />
+
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify(schema)}
+/>

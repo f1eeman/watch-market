@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/common.sh"
+
+# Конфиг находится автоматически: lint-staged.config.mts в корне проекта
+yarn lint-staged
