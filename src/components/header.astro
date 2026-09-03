@@ -1,0 +1,305 @@
+---
+const LINKS = [
+  { href: '#sample', label: 'Раздел' },
+  { href: '#request', label: 'Заявка' },
+  { href: '#contacts', label: 'Контакты' },
+]
+---
+
+<header class="header">
+  <div class="container row">
+    <a class="logo" href="/">Лендинг</a>
+
+    <details class="menu" data-menu>
+      <summary
+        class="menu-toggle"
+        data-menu-toggle
+        data-menu-label-open="Открыть меню"
+        data-menu-label-close="Закрыть меню"
+      >
+        <span class="visually-hidden" data-menu-label>Открыть меню</span>
+        <span class="burger" aria-hidden="true"></span>
+      </summary>
+      <nav class="nav" aria-label="Разделы страницы">
+        <ul class="nav-list">
+          {
+            LINKS.map((link) => (
+              <li>
+                <a class="nav-link" href={link.href}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<script>
+  import { initMenu } from '@/scripts/menu'
+
+  initMenu()
+</script>
+
+<style>
+  .header {
+    position: relative;
+    z-index: 1;
+    padding-block: 16px;
+  }
+
+  .row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    min-block-size: 36px;
+  }
+
+  .logo {
+    flex: none;
+    margin-inline-end: auto;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 36px;
+  }
+
+  .nav-link {
+    display: block;
+    font-size: 14px;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  @media (width < 1024px) {
+    .menu {
+      flex: none;
+    }
+
+    .menu-toggle {
+      position: relative;
+      display: grid;
+      place-content: center;
+      inline-size: 36px;
+      block-size: 36px;
+      border: 1px solid var(--color-border-chip);
+      border-radius: var(--radius-control);
+      background-color: var(--color-surface-chip);
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      transition: background-color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+    }
+
+    .menu-toggle::-webkit-details-marker {
+      display: none;
+    }
+
+    .menu-toggle::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+    }
+
+    .menu-toggle:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+    }
+
+    .menu-toggle:active {
+      background-color: color-mix(
+        in srgb,
+        var(--color-surface-chip) 86%,
+        var(--color-text)
+      );
+      transition-duration: 90ms;
+    }
+
+    .burger,
+    .burger::before,
+    .burger::after {
+      inline-size: 20px;
+      block-size: 2px;
+      border-radius: 1px;
+      background-color: var(--color-text);
+      transition:
+        transform 180ms cubic-bezier(0.2, 0.8, 0.25, 1),
+        background-color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+    }
+
+    .burger {
+      position: relative;
+    }
+
+    .burger::before,
+    .burger::after {
+      content: '';
+      position: absolute;
+      inset-inline-start: 0;
+    }
+
+    .burger::before {
+      inset-block-start: -6px;
+    }
+
+    .burger::after {
+      inset-block-start: 6px;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .menu-toggle:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--color-surface-chip) 92%,
+          var(--color-text)
+        );
+      }
+
+      .menu[open] .menu-toggle:hover .burger {
+        background-color: transparent;
+      }
+    }
+
+    .menu[open] .burger {
+      background-color: transparent;
+    }
+
+    .menu[open] .burger::before {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    .menu[open] .burger::after {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    .menu::details-content {
+      transition: content-visibility 180ms allow-discrete;
+    }
+
+    .nav {
+      position: absolute;
+      inset-inline: 0;
+      inset-block-start: 100%;
+      z-index: 10;
+      block-size: 0;
+      border-end-end-radius: var(--radius-tab);
+      border-end-start-radius: var(--radius-tab);
+      background-color: var(--color-surface-inverse);
+      overflow: hidden;
+      transition: block-size 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+    }
+
+    .menu[open] .nav {
+      block-size: auto;
+    }
+
+    .nav-list {
+      max-block-size: calc(100dvh - var(--header-height));
+      padding: 8px 16px 16px;
+      overflow-y: auto;
+    }
+
+    .nav-link {
+      padding-block: 10px;
+      padding-inline: 8px;
+      border-radius: var(--radius-control);
+      color: var(--color-text-inverse-muted);
+      transition-property: color, background-color;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .nav-link:hover {
+        color: var(--color-text-inverse);
+      }
+    }
+
+    .nav-link:active {
+      background-color: var(--color-surface-glass);
+      color: var(--color-text-inverse);
+    }
+  }
+
+  @media (width >= 1024px) {
+    .menu {
+      flex: 1;
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+    .menu::details-content {
+      block-size: auto;
+      content-visibility: visible;
+    }
+
+    .nav-list {
+      display: flex;
+      gap: 32px;
+      justify-content: flex-end;
+    }
+
+    .nav-link {
+      position: relative;
+      color: var(--color-text-muted);
+      transition-property: color, transform;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      inset-block-end: -4px;
+      inset-inline: 0;
+      block-size: 2px;
+      border-radius: 1px;
+      background-color: currentcolor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+    }
+
+    .nav-link:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 4px;
+    }
+
+    .nav-link:active {
+      color: var(--color-text);
+      transform: scale(0.97);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .nav-link:hover {
+        color: var(--color-text);
+      }
+
+      .nav-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav,
+    .nav-link,
+    .nav-link::after,
+    .menu-toggle,
+    .burger,
+    .burger::before,
+    .burger::after,
+    .menu::details-content {
+      transition: none;
+    }
+
+    .nav-link:active {
+      transform: none;
+    }
+  }
+</style>

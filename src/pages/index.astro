@@ -1,0 +1,16 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Promo from '@/components/promo.astro'
+import Request from '@/components/request.astro'
+import Sample from '@/components/sample.astro'
+
+const title = 'Заголовок страницы — Название продукта'
+const description =
+  'Описание страницы для поиска и соцсетей: одно-два предложения о продукте.'
+---
+
+<Layout {title} {description}>
+  <Promo />
+  <Sample />
+  <Request />
+</Layout>

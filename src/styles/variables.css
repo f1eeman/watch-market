@@ -1,0 +1,41 @@
+:root {
+  --color-bg: #fff;
+  --color-surface-card: #fff;
+  --color-surface-inverse: #202020;
+  --color-surface-chip: #f4f4f4;
+  --color-surface-glass: rgb(255 255 255 / 5%);
+  --color-border-chip: #e8e8e8;
+  --color-border-glass: rgb(255 255 255 / 10%);
+  --color-divider: #d7d7d7;
+  --color-accent: #2c2c2c;
+  --color-success: #219653;
+  --color-text: #2c2c2c;
+  --color-text-muted: #666;
+  --color-text-on-accent: #fff;
+  --color-text-inverse: #efefef;
+  --color-text-inverse-muted: #8b8888;
+  --color-field-bg: #fff;
+  --color-field-border: #dbdbdb;
+  --color-field-placeholder: #b2b6bf;
+  --radius-field: 4px;
+  --radius-control: 8px;
+  --radius-tab: 24px;
+  --radius-block: 32px;
+  --radius-pill: 40px;
+  --shadow-card: 0 4px 12px rgb(0 0 0 / 7%);
+  --shadow-card-soft: 0 4px 24px rgb(0 0 0 / 7%);
+  --shadow-accent: 0 4px 8px rgb(0 0 0 / 12%);
+  --control-height: 48px;
+  --header-height: 72px;
+  --layout-width: 1296px;
+  --layout-gutter: clamp(16px, 5vw, 72px);
+  --block-gap: 40px;
+  --region-gap: 56px;
+}
+
+@media (width >= 1024px) {
+  :root {
+    --region-gap: 120px;
+    --header-height: 88px;
+  }
+}

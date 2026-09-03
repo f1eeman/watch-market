@@ -1,0 +1,46 @@
+---
+import { Font } from 'astro:assets'
+import Seo from '@/components/seo.astro'
+import Header from '@/components/header.astro'
+import Footer from '@/components/footer.astro'
+
+import '@/styles/index.css'
+
+interface Props {
+  title: string
+  description: string
+}
+
+const { title, description } = Astro.props
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <Seo {title} {description} />
+    <Font
+      cssVariable="--font-open-sans"
+      preload={[{ weight: 400 }, { weight: 600 }, { weight: 700 }]}
+    />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import { initReveal } from '@/scripts/reveal'
+      import { initParallax } from '@/scripts/parallax'
+      import { initRequestForm } from '@/scripts/request-form'
+
+      initReveal()
+      initParallax()
+      initRequestForm()
+    </script>
+  </body>
+</html>

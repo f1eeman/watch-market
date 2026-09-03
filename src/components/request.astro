@@ -1,0 +1,240 @@
+---
+import Button from '@/components/button.astro'
+import Input from '@/components/input.astro'
+---
+
+<section class="section" id="request" data-region>
+  <div class="container">
+    <div class="card" data-reveal="up" data-bid-card>
+      <div class="pane request">
+        <div class="intro">
+          <p class="intro-title">Оставьте заявку</p>
+          <p class="intro-lead">
+            Свяжемся и поможем подобрать решение под ваши задачи
+          </p>
+        </div>
+
+        <form class="form" data-bid-form novalidate>
+          <div class="fields">
+            <div class="field">
+              <Input
+                type="text"
+                name="name"
+                autocomplete="name"
+                placeholder="Ваше имя"
+                aria-describedby="bid-name-error"
+                required
+                data-bid-name
+              />
+              <p class="error" id="bid-name-error"><span></span></p>
+            </div>
+
+            <div class="field">
+              <Input
+                type="tel"
+                name="phone"
+                inputmode="tel"
+                autocomplete="tel"
+                placeholder="Номер телефона"
+                aria-describedby="bid-phone-error"
+                required
+                data-bid-phone
+              />
+              <p class="error" id="bid-phone-error"><span></span></p>
+            </div>
+          </div>
+
+          <div class="submit">
+            <Button class="action" type="submit">Отправить</Button>
+            <p class="note">
+              *Нажимая на кнопку «Отправить» Вы соглашаетесь с <a
+                class="policy"
+                href="/privacy">политикой конфиденциальности</a
+              >
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <div class="pane done">
+        <div class="intro done-intro">
+          <h2 class="intro-title" tabindex="-1" data-bid-title>
+            Заявка отправлена
+          </h2>
+          <p class="intro-lead">
+            Спасибо за обращение! Свяжемся с вами в ближайшее время
+          </p>
+        </div>
+        <Button class="action" type="button" data-bid-reset>Закрыть</Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .card {
+    display: grid;
+    padding: 24px 16px;
+    border-radius: var(--radius-control);
+    background-color: var(--color-surface-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  .pane {
+    display: flex;
+    flex-direction: column;
+    grid-area: 1 / 1;
+    gap: 24px;
+    transition:
+      opacity 180ms ease,
+      display 180ms allow-discrete;
+  }
+
+  .done {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    text-align: center;
+  }
+
+  .card[data-bid-state='done'] .request {
+    display: none;
+    opacity: 0;
+  }
+
+  .card[data-bid-state='done'] .done {
+    display: flex;
+    opacity: 1;
+  }
+
+  @starting-style {
+    .card[data-bid-state='done'] .done {
+      opacity: 0;
+    }
+
+    .card:not([data-bid-state='done']) .request {
+      opacity: 0;
+    }
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .intro-title {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .intro-lead {
+    color: var(--color-text-muted);
+  }
+
+  .form,
+  .fields,
+  .submit {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .submit {
+    gap: 24px;
+  }
+
+  .action {
+    inline-size: 100%;
+  }
+
+  .error {
+    block-size: 0;
+    overflow: clip;
+    color: var(--color-accent);
+    font-size: 14px;
+    line-height: 20px;
+    transition: block-size 180ms ease;
+  }
+
+  .error span {
+    display: block;
+    padding-block-start: 6px;
+    transform: translateY(-100%);
+    transition: transform 180ms ease;
+  }
+
+  .error[data-shown] {
+    block-size: auto;
+  }
+
+  .error[data-shown] span {
+    transform: translateY(0);
+  }
+
+  .note {
+    color: var(--color-text-muted);
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  .policy {
+    text-decoration: underline;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .policy:hover {
+      color: var(--color-accent);
+    }
+  }
+
+  .policy:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .policy:active {
+    color: var(--color-accent);
+    transition-duration: 90ms;
+  }
+
+  @media (width >= 1024px) {
+    .card {
+      padding: 40px;
+    }
+
+    .fields {
+      flex-direction: row;
+    }
+
+    .field {
+      flex: 1;
+      min-inline-size: 0;
+    }
+
+    .submit {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .action {
+      inline-size: auto;
+      min-inline-size: 200px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pane,
+    .error,
+    .error span,
+    .policy {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+import Button from '@/components/button.astro'
+---
+
+<section class="promo section" id="promo">
+  <div class="container inner">
+    <h1 class="title">Заголовок лендинга</h1>
+    <p class="lead">
+      Подзаголовок в одну-две строки. Секция промо — первая на странице; ни
+      «герой», ни «первый экран».
+    </p>
+    <Button as="a" href="#request" size="lg" class="action"
+      >Оставить заявку</Button
+    >
+  </div>
+</section>
+
+<style>
+  .promo {
+    padding-block: 40px 56px;
+  }
+
+  .inner {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 24px;
+  }
+
+  .title {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .lead {
+    max-inline-size: 60ch;
+    color: var(--color-text-muted);
+  }
+
+  @media (width >= 1024px) {
+    .promo {
+      padding-block: 72px 120px;
+    }
+
+    .title {
+      font-size: 56px;
+    }
+
+    .lead {
+      font-size: 20px;
+      line-height: 28px;
+    }
+  }
+</style>

@@ -1,0 +1,131 @@
+---
+import type { HTMLTag, Polymorphic } from 'astro/types'
+
+type Props<Tag extends HTMLTag = 'button'> = Polymorphic<{ as: Tag }> & {
+  variant?: 'accent' | 'glass'
+  size?: 'md' | 'lg'
+}
+
+const {
+  as: Tag = 'button',
+  class: className,
+  variant = 'accent',
+  size = 'md',
+  ...attrs
+} = Astro.props
+---
+
+<Tag
+  class:list={['base-button', `variant-${variant}`, `size-${size}`, className]}
+  {...attrs}
+>
+  <slot />
+</Tag>
+
+<style>
+  .base-button {
+    position: relative;
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    min-block-size: var(--control-height);
+    padding: 12px 32px;
+    border-radius: var(--radius-control);
+    font: inherit;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+    transition:
+      background-color 180ms ease,
+      transform 180ms cubic-bezier(0.2, 0.8, 0.25, 1),
+      box-shadow 180ms ease;
+  }
+
+  .variant-accent {
+    background-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+    box-shadow: var(--shadow-accent);
+  }
+
+  .variant-glass {
+    padding: 11px 31px;
+    border: 1px solid var(--color-border-glass);
+    background-color: var(--color-surface-glass);
+    color: var(--color-text-inverse);
+  }
+
+  .size-lg {
+    padding-block: 16px;
+  }
+
+  .variant-glass.size-lg {
+    padding: 15px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .base-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .variant-accent:hover {
+      background-color: color-mix(in srgb, var(--color-accent) 88%, #fff);
+    }
+
+    .variant-glass:hover {
+      background-color: color-mix(
+        in srgb,
+        var(--color-text-inverse) 12%,
+        transparent
+      );
+    }
+  }
+
+  .base-button:focus-visible {
+    transform: translateY(-2px);
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .variant-glass:focus-visible {
+    outline-color: var(--color-text-inverse);
+  }
+
+  .base-button:active {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 90ms;
+  }
+
+  .variant-accent:active {
+    background-color: color-mix(in srgb, var(--color-accent) 85%, #000);
+  }
+
+  .variant-glass:active {
+    background-color: color-mix(
+      in srgb,
+      var(--color-text-inverse) 6%,
+      transparent
+    );
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .base-button {
+      transition: background-color 180ms ease;
+    }
+
+    .base-button:focus-visible,
+    .base-button:active {
+      transform: none;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .base-button:hover {
+        transform: none;
+      }
+    }
+  }
+</style>
