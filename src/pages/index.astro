@@ -1,16 +1,18 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import Promo from '@/components/promo.astro'
-import Request from '@/components/request.astro'
-import Sample from '@/components/sample.astro'
+import Popular from '@/components/popular.astro'
+import Quality from '@/components/quality.astro'
+import News from '@/components/news.astro'
 
-const title = 'Заголовок страницы — Название продукта'
+const title = 'CONQUEST — швейцарские часы в наличии в Москве'
 const description =
-  'Описание страницы для поиска и соцсетей: одно-два предложения о продукте.'
+  'Коллекция «Весна/Лето 2019»: швейцарские часы в наличии в Москве и с доставкой по всему миру. Сертификаты качества, гарантии и ремонт.'
 ---
 
-<Layout {title} {description}>
+<Layout {title} {description} surface>
   <Promo />
-  <Sample />
-  <Request />
+  <Popular />
+  <Quality />
+  <News />
 </Layout>

@@ -9,9 +9,11 @@ import '@/styles/index.css'
 interface Props {
   title: string
   description: string
+  current?: 'catalog' | 'sale' | 'delivery' | undefined
+  surface?: boolean | undefined
 }
 
-const { title, description } = Astro.props
+const { title, description, current, surface } = Astro.props
 ---
 
 <!doctype html>
@@ -22,13 +24,12 @@ const { title, description } = Astro.props
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <Seo {title} {description} />
-    <Font
-      cssVariable="--font-open-sans"
-      preload={[{ weight: 400 }, { weight: 600 }, { weight: 700 }]}
-    />
+    <Font cssVariable="--font-roboto" preload={[{ weight: 400 }]} />
+    <Font cssVariable="--font-playfair" preload={[{ weight: 400 }]} />
+    <Font cssVariable="--font-prata" />
   </head>
   <body>
-    <Header />
+    <Header {current} {surface} />
     <main>
       <slot />
     </main>
@@ -36,11 +37,29 @@ const { title, description } = Astro.props
     <script>
       import { initReveal } from '@/scripts/reveal'
       import { initParallax } from '@/scripts/parallax'
-      import { initRequestForm } from '@/scripts/request-form'
+      import { initSweep } from '@/scripts/sweep'
+      import { initStroke } from '@/scripts/stroke'
+      import { initTilt } from '@/scripts/tilt'
+      import { initCarousel } from '@/scripts/carousel'
+      import { initGallery } from '@/scripts/gallery'
+      import { initTabs } from '@/scripts/tabs'
+      import { initPriceRange } from '@/scripts/price-range'
+      import { initBag } from '@/scripts/bag'
+      import { initSearch } from '@/scripts/search'
+      import { initSort } from '@/scripts/sort'
 
       initReveal()
       initParallax()
-      initRequestForm()
+      initSweep()
+      initStroke()
+      initTilt()
+      initCarousel()
+      initGallery()
+      initTabs()
+      initPriceRange()
+      initBag()
+      initSearch()
+      initSort()
     </script>
   </body>
 </html>

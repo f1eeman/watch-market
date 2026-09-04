@@ -1,55 +1,244 @@
 ---
+import { Image } from 'astro:assets'
 import Button from '@/components/button.astro'
+import Price from '@/components/price.astro'
+import watchMain from '@/img/promo/watch-main.png'
 ---
 
-<section class="promo section" id="promo">
+<section class="promo section" id="promo" data-band data-parallax-scene>
+  <span
+    class="blob"
+    aria-hidden="true"
+    data-enter="fade"
+    data-parallax="0.07"
+    data-parallax-rotate="2"></span>
+
   <div class="container inner">
-    <h1 class="title">Заголовок лендинга</h1>
-    <p class="lead">
-      Подзаголовок в одну-две строки. Секция промо — первая на странице; ни
-      «герой», ни «первый экран».
+    <div class="text">
+      <span
+        class="rule dash"
+        aria-hidden="true"
+        data-enter="draw"
+        data-enter-step="1"></span>
+      <h1 class="title" data-enter data-enter-step="2">Весна/Лето 2019</h1>
+      <p class="subtitle" data-enter data-enter-step="3">Коллекция</p>
+      <p class="lead" data-enter data-enter-step="4">
+        Швейцарские часы в наличии в Москве<br />и с доставкой по всему миру
+      </p>
+      <Button
+        as="a"
+        href="/catalog/"
+        size="lg"
+        class="action"
+        data-enter
+        data-enter-step="5"
+      >
+        Смотреть каталог
+      </Button>
+    </div>
+
+    <span class="watch-layer" data-parallax="-0.05" data-parallax-rotate="-3">
+      <Image
+        class="watch"
+        src={watchMain}
+        alt="Наручные часы RADO из коллекции «Весна/Лето 2019»"
+        widths={[320, 503, 760, 1006]}
+        sizes="(width >= 1024px) 37vw, 86vw"
+        quality={90}
+        loading="eager"
+        data-enter="lift"
+        data-enter-step="1"
+      />
+    </span>
+
+    <p class="note note-price" data-enter="fade" data-enter-step="6">
+      <Price>22 000</Price>
+      <span class="rule" aria-hidden="true"></span>
     </p>
-    <Button as="a" href="#request" size="lg" class="action"
-      >Оставить заявку</Button
-    >
+
+    <p class="note note-size" data-enter="fade" data-enter-step="7">
+      <span class="rule" aria-hidden="true"></span>
+      28 мм диаметр
+    </p>
   </div>
 </section>
 
 <style>
   .promo {
-    padding-block: 40px 56px;
+    position: relative;
+    padding-block-end: 40px;
+    background-color: var(--color-surface);
+    overflow: hidden;
+  }
+
+  .blob {
+    position: absolute;
+    inset-inline-start: 34.33%;
+    inset-block-start: -7.9%;
+    inline-size: 36.31%;
+    block-size: 117.9%;
+    border-radius: 100% 0 0 100% / 50% 0 0 50%;
+    background: linear-gradient(180deg, rgb(234 227 212 / 0%) 0%, #eae3d4 100%);
   }
 
   .inner {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 24px;
+    position: relative;
+    display: grid;
+    gap: 32px;
+  }
+
+  .dash {
+    display: block;
+    margin-block-end: 24px;
   }
 
   .title {
-    font-weight: 700;
+    font-family: var(--font-serif);
+    font-weight: 400;
     font-size: 32px;
-    line-height: 1.2;
+    line-height: 1.05;
+    color: var(--color-text);
+  }
+
+  .subtitle {
+    margin-block-start: 8px;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.05;
+    color: var(--color-text);
   }
 
   .lead {
-    max-inline-size: 60ch;
-    color: var(--color-text-muted);
+    max-inline-size: 258px;
+    margin-block-start: 20px;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--color-text-soft);
+  }
+
+  .action {
+    margin-block-start: 28px;
+  }
+
+  .watch-layer {
+    display: block;
+    inline-size: 86%;
+    max-inline-size: 503px;
+    margin-inline: auto;
+  }
+
+  .watch {
+    inline-size: 100%;
+    height: auto;
+  }
+
+  .note {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    font-family: var(--font-figure);
+    font-size: 16px;
+    line-height: 1;
+    color: var(--color-text);
+  }
+
+  .note-price {
+    justify-content: flex-end;
+  }
+
+  @media (width >= 640px) {
+    .inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: center;
+    }
+
+    .watch-layer {
+      grid-row: 1 / span 3;
+      grid-column: 2;
+      align-self: center;
+      inline-size: 100%;
+    }
+
+    .note {
+      grid-column: 1;
+    }
+
+    .note-price {
+      justify-content: flex-start;
+    }
   }
 
   @media (width >= 1024px) {
     .promo {
-      padding-block: 72px 120px;
+      padding-block-end: 0;
+    }
+
+    .inner {
+      display: block;
+      min-block-size: 801px;
+      padding-block-start: 267px;
+      padding-inline-start: calc(var(--layout-gutter) + 82px);
+    }
+
+    .text {
+      position: relative;
+    }
+
+    .dash {
+      position: absolute;
+      inset-inline-start: -65px;
+      inset-block-start: 36px;
+      margin-block-end: 0;
     }
 
     .title {
-      font-size: 56px;
+      font-size: 45px;
+    }
+
+    .subtitle {
+      margin-block-start: 15px;
+      font-size: 30px;
     }
 
     .lead {
-      font-size: 20px;
-      line-height: 28px;
+      margin-block-start: 39px;
+    }
+
+    .action {
+      margin-block-start: 57px;
+      margin-inline-start: -4px;
+    }
+
+    .watch-layer {
+      position: absolute;
+      inset-inline-start: 48.41%;
+      inset-block-start: 22px;
+      inline-size: 40.05%;
+      max-inline-size: none;
+      margin-inline: 0;
+    }
+
+    .watch {
+      aspect-ratio: 503 / 804;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .note {
+      position: absolute;
+      margin: 0;
+    }
+
+    .note-price {
+      inset-inline-start: 42.04%;
+      inset-block-start: 169px;
+    }
+
+    .note-size {
+      inset-inline-start: 80.41%;
+      inset-block-start: 667px;
     }
   }
 </style>

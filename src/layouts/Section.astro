@@ -1,0 +1,88 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Breadcrumbs from '@/components/breadcrumbs.astro'
+import Help from '@/components/help.astro'
+import Prose from '@/components/prose.astro'
+import { sectionOf } from '@/data/sections'
+
+interface Props {
+  slug: string
+  current?: 'catalog' | 'sale' | 'delivery' | undefined
+}
+
+const { slug, current } = Astro.props
+
+const section = sectionOf(slug)
+
+const CRUMBS = [{ href: '/', label: 'Главная' }, { label: section.label }]
+---
+
+<Layout
+  title={`${section.heading} — CONQUEST`}
+  description={section.description}
+  {current}
+>
+  <section class="page section" aria-labelledby="page-title">
+    <div class="container">
+      <Breadcrumbs items={CRUMBS} />
+
+      <h1 class="headline title" id="page-title" data-enter data-enter-step="2">
+        {section.heading}
+      </h1>
+
+      {
+        section.lead !== null && (
+          <p class="lead" data-enter data-enter-step="3">
+            {section.lead}
+          </p>
+        )
+      }
+
+      {
+        section.blocks.length > 0 && (
+          <div class="body" data-enter data-enter-step="4">
+            <Prose blocks={section.blocks} />
+          </div>
+        )
+      }
+
+      <slot />
+    </div>
+  </section>
+
+  <slot name="after" />
+
+  <Help />
+</Layout>
+
+<style>
+  .title {
+    margin-block-start: 24px;
+  }
+
+  .lead {
+    max-inline-size: 60ch;
+    margin-block-start: 20px;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-text-strong);
+  }
+
+  .body {
+    margin-block-start: 40px;
+  }
+
+  @media (width >= 1024px) {
+    .title {
+      margin-block-start: 40px;
+    }
+
+    .lead {
+      margin-block-start: 24px;
+    }
+
+    .body {
+      margin-block-start: 51px;
+    }
+  }
+</style>

@@ -1,0 +1,323 @@
+---
+import Search from '@/img/icons/search.svg'
+import Favourite from '@/img/icons/favourite.svg'
+import Basket from '@/img/icons/basket.svg'
+import { INDEX } from '@/data/products'
+
+const BAGS = [
+  {
+    bag: 'favourites',
+    label: 'Избранное',
+    empty: 'В избранном пусто',
+    Glyph: Favourite,
+    glyph: 'heart',
+  },
+  {
+    bag: 'cart',
+    label: 'Корзина',
+    empty: 'Корзина пуста',
+    Glyph: Basket,
+    glyph: 'basket',
+  },
+]
+---
+
+<div class="icons">
+  <script
+    type="application/json"
+    data-shop-index
+    is:inline
+    set:html={JSON.stringify(INDEX)}
+  />
+
+  <details class="drop" name="shop" data-search>
+    <summary class="icon-button">
+      <span class="visually-hidden">Поиск по каталогу</span>
+      <Search class="icon glyph-search" />
+    </summary>
+
+    <div class="panel">
+      <input
+        class="field"
+        type="search"
+        data-search-field
+        placeholder="Бренд или цена"
+        aria-label="Что искать"
+      />
+      <ul class="hits" data-search-results></ul>
+      <p class="note" data-search-empty hidden>Ничего не нашли</p>
+    </div>
+  </details>
+
+  {
+    BAGS.map((item) => (
+      <details class="drop" name="shop" data-bag-panel={item.bag}>
+        <summary class="icon-button">
+          <span class="visually-hidden">{item.label}</span>
+          <item.Glyph class={`icon glyph-${item.glyph}`} />
+          <span class="badge" data-bag-count={item.bag} hidden>
+            0
+          </span>
+        </summary>
+
+        <div class="panel">
+          <p class="panel-title">{item.label}</p>
+          <ul class="hits" data-bag-list={item.bag} />
+          <p class="note" data-bag-empty={item.bag}>
+            {item.empty}
+          </p>
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .icons {
+    display: flex;
+    flex: none;
+    align-items: center;
+    margin-inline-end: -10px;
+    order: 1;
+  }
+
+  .drop {
+    position: relative;
+  }
+
+  .icon-button {
+    position: relative;
+    display: grid;
+    place-content: center;
+    inline-size: 44px;
+    block-size: 44px;
+    list-style: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .icon-button::-webkit-details-marker {
+    display: none;
+  }
+
+  .icon-button:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: -6px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .icon-button:hover {
+      opacity: 0.6;
+    }
+  }
+
+  .icon-button:active {
+    opacity: 0.45;
+    transition-duration: 90ms;
+  }
+
+  .glyph-search {
+    inline-size: 16px;
+    block-size: 16px;
+  }
+
+  .glyph-heart {
+    inline-size: 19px;
+    block-size: 16px;
+  }
+
+  .glyph-basket {
+    inline-size: 18px;
+    block-size: 16px;
+  }
+
+  .badge {
+    position: absolute;
+    inset-block-start: calc(50% - 13px);
+    inset-inline-start: calc(50% + 4px);
+    display: grid;
+    place-content: center;
+    inline-size: 13px;
+    block-size: 13px;
+    border-radius: 50%;
+    background-color: var(--color-accent-soft);
+    font-size: 8px;
+    line-height: 1;
+    color: var(--color-text);
+  }
+
+  .panel {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block-start: calc(100% + 8px);
+    z-index: 20;
+    inline-size: min(320px, calc(100vw - var(--layout-gutter) * 2));
+    padding: 20px;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-photo);
+  }
+
+  .field {
+    inline-size: 100%;
+    padding: 10px 0;
+    border: none;
+    border-block-end: 1px solid var(--color-divider);
+    background: none;
+    font: inherit;
+    color: var(--color-text);
+  }
+
+  .field::placeholder {
+    color: var(--color-text-disabled);
+    opacity: 1;
+  }
+
+  .field:focus-visible {
+    border-color: var(--color-text);
+    outline: none;
+  }
+
+  .panel-title {
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-text-strong);
+  }
+
+  .hits {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hits:not(:empty) {
+    margin-block-start: 12px;
+  }
+
+  .note {
+    margin-block-start: 12px;
+    color: var(--color-text-price);
+  }
+
+  .hits :global(.shop-row),
+  .hits :global(.search-hit) {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    padding-block: 8px;
+  }
+
+  .hits :global(.search-hit) {
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .hits :global(.shop-brand),
+  .hits :global(.search-brand) {
+    flex: 1;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--color-text-strong);
+  }
+
+  .hits :global(.shop-price),
+  .hits :global(.search-price) {
+    color: var(--color-text-price);
+  }
+
+  .hits :global(.shop-drop) {
+    position: relative;
+    flex: none;
+    inline-size: 20px;
+    block-size: 20px;
+  }
+
+  .hits :global(.shop-drop)::before,
+  .hits :global(.shop-drop)::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 9px;
+    inset-inline: 3px;
+    block-size: 1px;
+    background-color: var(--color-text-price);
+  }
+
+  .hits :global(.shop-drop)::before {
+    rotate: 45deg;
+  }
+
+  .hits :global(.shop-drop)::after {
+    rotate: -45deg;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hits :global(.search-hit):hover :global(.search-brand),
+    .hits :global(.shop-drop):hover::before,
+    .hits :global(.shop-drop):hover::after {
+      color: var(--color-accent);
+      background-color: var(--color-accent);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .drop::details-content {
+      block-size: 0;
+      overflow: hidden;
+      transition:
+        block-size 180ms cubic-bezier(0.2, 0.8, 0.25, 1),
+        content-visibility 180ms allow-discrete;
+    }
+
+    .drop[open]::details-content {
+      block-size: auto;
+    }
+  }
+
+  @media (width < 1024px) {
+    .drop {
+      position: static;
+    }
+
+    .panel {
+      inset-inline: 0;
+      inset-block-start: calc(100% + 28px);
+      inline-size: auto;
+      padding: 16px var(--layout-gutter) 20px;
+    }
+  }
+
+  @media (width >= 1024px) {
+    .icons {
+      gap: 23px;
+      margin-inline-end: 0;
+    }
+
+    .icon-button {
+      inline-size: auto;
+      block-size: auto;
+    }
+
+    .icon-button::after {
+      content: '';
+      position: absolute;
+      inset-block: -14px;
+      inset-inline: -11px;
+    }
+
+    .icon-button:focus-visible {
+      outline-offset: 6px;
+    }
+
+    .badge {
+      inset-block-start: -5px;
+      inset-inline-start: 14px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .icon-button {
+      transition: none;
+    }
+  }
+</style>

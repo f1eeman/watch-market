@@ -1,0 +1,80 @@
+---
+import Mark from '@/img/icons/logo.svg'
+import MarkOnInverse from '@/img/icons/logo-footer.svg'
+
+interface Props {
+  place?: 'header' | 'footer'
+}
+
+const { place = 'header' } = Astro.props
+---
+
+<a
+  class:list={['logo', `place-${place}`]}
+  href="/"
+  aria-label="CONQUEST, на главную"
+>
+  {place === 'footer' ? <MarkOnInverse class="mark" /> : <Mark class="mark" />}
+  <span class="word" aria-hidden="true">CONQUEST</span>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-serif);
+    letter-spacing: 0.14em;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .place-header {
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+
+  .place-footer {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--color-text-on-inverse);
+  }
+
+  .mark {
+    flex: none;
+  }
+
+  .place-header .mark {
+    inline-size: 26px;
+    block-size: 26px;
+  }
+
+  .place-footer .mark {
+    inline-size: 34px;
+    block-size: 34px;
+  }
+
+  .logo:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 4px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .logo:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .logo:active {
+    opacity: 0.55;
+    transition-duration: 90ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo {
+      transition: none;
+    }
+  }
+</style>

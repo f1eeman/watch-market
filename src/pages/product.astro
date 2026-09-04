@@ -1,0 +1,53 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Breadcrumbs from '@/components/breadcrumbs.astro'
+import ProductGallery from '@/components/product-gallery.astro'
+import ProductInfo from '@/components/product-info.astro'
+import Viewed from '@/components/viewed.astro'
+
+const title = 'KULTE, 26 мм — наручные часы Georg Jensen'
+const description =
+  'Наручные часы KULTE датского дизайнера Хэннинга Коппеля, 26 мм, механизм Swiss Made. 12 700 ₽ с доставкой по всему миру.'
+
+const CRUMBS = [
+  { href: '/', label: 'Главная' },
+  { href: '/catalog/', label: 'Каталог' },
+  { href: '/catalog/', label: 'Мужские часы' },
+  { label: 'Georg Jensen' },
+]
+---
+
+<Layout {title} {description} current="catalog">
+  <section class="product section">
+    <div class="container">
+      <Breadcrumbs items={CRUMBS} />
+
+      <div class="card">
+        <ProductGallery />
+        <ProductInfo />
+      </div>
+    </div>
+  </section>
+
+  <Viewed />
+</Layout>
+
+<style>
+  .card {
+    display: grid;
+    gap: 32px;
+    margin-block-start: 22px;
+  }
+
+  @media (width >= 1024px) {
+    .card {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px;
+      align-items: start;
+    }
+
+    .card > :global(*:last-child) {
+      margin-block-start: 38px;
+    }
+  }
+</style>

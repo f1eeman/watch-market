@@ -1,14 +1,25 @@
 ---
+import Logo from '@/components/logo.astro'
+import ShopBar from '@/components/shop-bar.astro'
+
+interface Props {
+  current?: 'catalog' | 'sale' | 'delivery' | undefined
+  surface?: boolean | undefined
+}
+
+const { current, surface } = Astro.props
+
 const LINKS = [
-  { href: '#sample', label: 'Раздел' },
-  { href: '#request', label: 'Заявка' },
-  { href: '#contacts', label: 'Контакты' },
+  { href: '/catalog/', label: 'Каталог', key: 'catalog' },
+  { href: '/sale/', label: 'Акции', key: 'sale' },
+  { href: '/delivery/', label: 'Доставка', key: 'delivery' },
+  { href: '#contacts', label: 'Контакты', key: 'contacts' },
 ]
 ---
 
-<header class="header">
+<header class:list={['header', { surface }]}>
   <div class="container row">
-    <a class="logo" href="/">Лендинг</a>
+    <Logo />
 
     <details class="menu" data-menu>
       <summary
@@ -20,12 +31,16 @@ const LINKS = [
         <span class="visually-hidden" data-menu-label>Открыть меню</span>
         <span class="burger" aria-hidden="true"></span>
       </summary>
-      <nav class="nav" aria-label="Разделы страницы">
+      <nav class="nav" aria-label="Разделы магазина">
         <ul class="nav-list">
           {
             LINKS.map((link) => (
               <li>
-                <a class="nav-link" href={link.href}>
+                <a
+                  class="nav-link"
+                  href={link.href}
+                  aria-current={link.key === current ? 'page' : undefined}
+                >
                   {link.label}
                 </a>
               </li>
@@ -34,6 +49,8 @@ const LINKS = [
         </ul>
       </nav>
     </details>
+
+    <ShopBar />
   </div>
 </header>
 
@@ -47,27 +64,25 @@ const LINKS = [
   .header {
     position: relative;
     z-index: 1;
-    padding-block: 16px;
+    padding-block-start: 28px;
+  }
+
+  .surface {
+    background-color: var(--color-surface);
   }
 
   .row {
     display: flex;
     gap: 12px;
     align-items: center;
-    min-block-size: 36px;
-  }
-
-  .logo {
-    flex: none;
-    margin-inline-end: auto;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 36px;
+    justify-content: space-between;
+    min-block-size: 26px;
   }
 
   .nav-link {
     display: block;
     font-size: 14px;
+    color: var(--color-text-muted);
     white-space: nowrap;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -75,58 +90,43 @@ const LINKS = [
     transition: color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
   }
 
+  .nav-link[aria-current] {
+    color: var(--color-accent);
+  }
+
   @media (width < 1024px) {
     .menu {
       flex: none;
+      order: 2;
     }
 
     .menu-toggle {
       position: relative;
       display: grid;
       place-content: center;
-      inline-size: 36px;
-      block-size: 36px;
-      border: 1px solid var(--color-border-chip);
-      border-radius: var(--radius-control);
-      background-color: var(--color-surface-chip);
+      inline-size: 44px;
+      block-size: 44px;
       list-style: none;
       cursor: pointer;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
-      transition: background-color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
     }
 
     .menu-toggle::-webkit-details-marker {
       display: none;
     }
 
-    .menu-toggle::after {
-      content: '';
-      position: absolute;
-      inset: -4px;
-    }
-
     .menu-toggle:focus-visible {
-      outline: 2px solid var(--color-accent);
-      outline-offset: 3px;
-    }
-
-    .menu-toggle:active {
-      background-color: color-mix(
-        in srgb,
-        var(--color-surface-chip) 86%,
-        var(--color-text)
-      );
-      transition-duration: 90ms;
+      outline: 2px solid var(--color-text);
+      outline-offset: -6px;
     }
 
     .burger,
     .burger::before,
     .burger::after {
       inline-size: 20px;
-      block-size: 2px;
-      border-radius: 1px;
+      block-size: 1px;
       background-color: var(--color-text);
       transition:
         transform 180ms cubic-bezier(0.2, 0.8, 0.25, 1),
@@ -153,14 +153,6 @@ const LINKS = [
     }
 
     @media (hover: hover) and (pointer: fine) {
-      .menu-toggle:hover {
-        background-color: color-mix(
-          in srgb,
-          var(--color-surface-chip) 92%,
-          var(--color-text)
-        );
-      }
-
       .menu[open] .menu-toggle:hover .burger {
         background-color: transparent;
       }
@@ -185,11 +177,9 @@ const LINKS = [
     .nav {
       position: absolute;
       inset-inline: 0;
-      inset-block-start: 100%;
+      inset-block-start: calc(100% + 28px);
       z-index: 10;
       block-size: 0;
-      border-end-end-radius: var(--radius-tab);
-      border-end-start-radius: var(--radius-tab);
       background-color: var(--color-surface-inverse);
       overflow: hidden;
       transition: block-size 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
@@ -200,34 +190,37 @@ const LINKS = [
     }
 
     .nav-list {
-      max-block-size: calc(100dvh - var(--header-height));
-      padding: 8px 16px 16px;
+      max-block-size: calc(100dvh - 82px);
+      padding: 8px var(--layout-gutter) 16px;
       overflow-y: auto;
     }
 
     .nav-link {
       padding-block: 10px;
-      padding-inline: 8px;
-      border-radius: var(--radius-control);
-      color: var(--color-text-inverse-muted);
+      color: var(--color-text-on-inverse-muted);
       transition-property: color, background-color;
+    }
+
+    .nav-link[aria-current] {
+      color: var(--color-accent);
     }
 
     @media (hover: hover) and (pointer: fine) {
       .nav-link:hover {
-        color: var(--color-text-inverse);
+        color: var(--color-text-on-inverse);
       }
     }
 
     .nav-link:active {
-      background-color: var(--color-surface-glass);
-      color: var(--color-text-inverse);
+      background-color: rgb(255 255 255 / 5%);
+      color: var(--color-text-on-inverse);
     }
   }
 
   @media (width >= 1024px) {
     .menu {
       flex: 1;
+      order: 0;
     }
 
     .menu-toggle {
@@ -241,14 +234,12 @@ const LINKS = [
 
     .nav-list {
       display: flex;
-      gap: 32px;
-      justify-content: flex-end;
+      gap: 65px;
+      justify-content: center;
     }
 
     .nav-link {
       position: relative;
-      color: var(--color-text-muted);
-      transition-property: color, transform;
     }
 
     .nav-link::after {
@@ -256,8 +247,7 @@ const LINKS = [
       position: absolute;
       inset-block-end: -4px;
       inset-inline: 0;
-      block-size: 2px;
-      border-radius: 1px;
+      block-size: 1px;
       background-color: currentcolor;
       transform: scaleX(0);
       transform-origin: right;
@@ -265,7 +255,7 @@ const LINKS = [
     }
 
     .nav-link:focus-visible {
-      outline: 2px solid var(--color-accent);
+      outline: 2px solid var(--color-text);
       outline-offset: 4px;
     }
 
@@ -290,7 +280,6 @@ const LINKS = [
     .nav,
     .nav-link,
     .nav-link::after,
-    .menu-toggle,
     .burger,
     .burger::before,
     .burger::after,

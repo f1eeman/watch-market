@@ -1,0 +1,43 @@
+---
+import Strip from '@/components/strip.astro'
+import Carousel from '@/components/carousel.astro'
+import ProductCard from '@/components/product-card.astro'
+import { VIEWED } from '@/data/products'
+---
+
+<section
+  class="viewed section"
+  id="viewed"
+  data-region
+  aria-labelledby="viewed-title"
+>
+  <div class="container">
+    <Strip title="Вы смотрели" id="viewed-title" />
+
+    <div class="row">
+      <Carousel label="Просмотренные товары">
+        {
+          VIEWED.map((product) => (
+            <li>
+              <ProductCard {product} box={360} step={1024} />
+            </li>
+          ))
+        }
+      </Carousel>
+    </div>
+  </div>
+</section>
+
+<style>
+  .row {
+    --card-ratio: 360 / 374;
+
+    margin-block-start: 32px;
+  }
+
+  @media (width >= 1024px) {
+    .row {
+      margin-block-start: 51px;
+    }
+  }
+</style>
