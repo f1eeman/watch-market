@@ -1,0 +1,277 @@
+---
+import { Image } from 'astro:assets'
+import Price from '@/components/price.astro'
+import Favourite from '@/img/icons/favourite.svg'
+import FavouriteFilled from '@/img/icons/favourite-filled.svg'
+import Basket from '@/img/icons/basket.svg'
+import type { Product } from '@/data/products'
+
+interface Props {
+  product: Product
+  box: number
+  step: number
+  href?: string
+  loading?: 'eager' | 'lazy'
+}
+
+const { product, box, step, href = '/product/', loading = 'lazy' } = Astro.props
+
+const { id, brand, price, image, alt, crop } = product
+
+const scale = Number.parseFloat(crop.width) / 100
+
+const shown = Math.round(box * scale)
+
+const widths = [shown, shown * 2]
+
+const sizes = `(width >= ${String(step)}px) ${String(shown)}px, (width >= 640px) ${String(Math.round(44 * scale))}vw, ${String(Math.round(88 * scale))}vw`
+---
+
+<div class="cell">
+  <a class="card" {href} data-tilt>
+    <span class="photo">
+      <Image
+        class="shot"
+        src={image}
+        {alt}
+        {sizes}
+        {widths}
+        {loading}
+        quality={88}
+        style={`inset-inline-start:${crop.left};inset-block-start:${crop.top};inline-size:${crop.width};block-size:${crop.height}`}
+      />
+    </span>
+
+    <span class="text">
+      <span class="brand">{brand}</span>
+      <Price class="price">{price}</Price>
+    </span>
+  </a>
+
+  <div class="tools">
+    <button
+      class="tool"
+      type="button"
+      data-bag="favourites"
+      data-bag-id={id}
+      data-bag-label-off={`Добавить ${brand} в избранное`}
+      data-bag-label-on={`Убрать ${brand} из избранного`}
+      aria-pressed="false"
+    >
+      <span class="visually-hidden" data-bag-label
+        >Добавить {brand} в избранное</span
+      >
+      <Favourite class="tool-glyph glyph-heart glyph-off" />
+      <FavouriteFilled class="tool-glyph glyph-heart glyph-on" />
+    </button>
+
+    <button
+      class="tool"
+      type="button"
+      data-bag="cart"
+      data-bag-id={id}
+      data-bag-label-off={`Положить ${brand} в корзину`}
+      data-bag-label-on={`Убрать ${brand} из корзины`}
+      aria-pressed="false"
+    >
+      <span class="visually-hidden" data-bag-label
+        >Положить {brand} в корзину</span
+      >
+      <Basket class="tool-glyph glyph-basket" />
+    </button>
+  </div>
+</div>
+
+<style>
+  .cell {
+    position: relative;
+  }
+
+  .card {
+    position: relative;
+    display: block;
+    aspect-ratio: var(--card-ratio, 252 / 300);
+    padding: 20px;
+    background-color: var(--color-surface);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .photo {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .shot {
+    position: absolute;
+    max-inline-size: none;
+    filter: drop-shadow(var(--shadow-tile));
+    transition: translate 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .text {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    align-items: flex-start;
+  }
+
+  .brand {
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    color: var(--color-text-strong);
+  }
+
+  .price {
+    line-height: 1;
+    color: var(--color-text-price);
+  }
+
+  .card:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+  }
+
+  .tools {
+    position: absolute;
+    inset-block-start: 12px;
+    inset-inline-end: 12px;
+    display: flex;
+    gap: 4px;
+  }
+
+  .tool {
+    position: relative;
+    display: grid;
+    place-content: center;
+    inline-size: 44px;
+    block-size: 44px;
+    color: var(--color-text);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition:
+      opacity 180ms cubic-bezier(0.2, 0.8, 0.25, 1),
+      scale 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .tool::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    background-color: var(--color-surface-inverse);
+    opacity: 0;
+    scale: 0.7;
+    transition:
+      opacity 180ms cubic-bezier(0.2, 0.8, 0.25, 1),
+      scale 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .tool-glyph {
+    position: relative;
+    opacity: 0.55;
+    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .glyph-on {
+    display: none;
+  }
+
+  .glyph-heart {
+    inline-size: 19px;
+    block-size: 16px;
+  }
+
+  .glyph-basket {
+    inline-size: 18px;
+    block-size: 16px;
+  }
+
+  .tool[aria-pressed='true']::before {
+    opacity: 1;
+    scale: 1;
+  }
+
+  .tool[aria-pressed='true'] .tool-glyph {
+    opacity: 1;
+  }
+
+  .tool[aria-pressed='true'] :global(path) {
+    fill: var(--color-page);
+    stroke: var(--color-page);
+  }
+
+  .tool[aria-pressed='true'] .glyph-off {
+    display: none;
+  }
+
+  .tool[aria-pressed='true'] .glyph-on {
+    display: block;
+  }
+
+  .tool:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: -8px;
+  }
+
+  .tool:active {
+    scale: 0.9;
+    transition-duration: 90ms;
+  }
+
+  .card:active .shot {
+    translate: 0 -2px;
+    transition-duration: 90ms;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover .shot {
+      translate: 0 -6px;
+    }
+
+    .tool {
+      opacity: 0;
+    }
+
+    .cell:hover .tool,
+    .tool:focus-visible,
+    .tool[aria-pressed='true'] {
+      opacity: 1;
+    }
+
+    .tool:hover .tool-glyph {
+      opacity: 1;
+    }
+  }
+
+  @media (width >= 1024px) {
+    .tools {
+      inset-block-start: 8px;
+      inset-inline-end: 8px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shot,
+    .tool,
+    .tool::before,
+    .tool-glyph {
+      transition: none;
+    }
+
+    .tool::before {
+      scale: 1;
+    }
+
+    .card:active .shot,
+    .card:hover .shot {
+      translate: none;
+    }
+
+    .tool:active {
+      scale: none;
+    }
+  }
+</style>

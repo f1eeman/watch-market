@@ -1,0 +1,43 @@
+---
+import Strip from '@/components/strip.astro'
+import Carousel from '@/components/carousel.astro'
+import ProductCard from '@/components/product-card.astro'
+import { STRAPS } from '@/data/products'
+---
+
+<section
+  class="straps section"
+  id="straps"
+  data-region
+  aria-labelledby="straps-title"
+>
+  <div class="container">
+    <Strip title="Ремешки" id="straps-title" allHref="/catalog/" />
+
+    <div class="row">
+      <Carousel label="Ремешки">
+        {
+          STRAPS.map((product) => (
+            <li>
+              <ProductCard {product} box={360} step={1024} />
+            </li>
+          ))
+        }
+      </Carousel>
+    </div>
+  </div>
+</section>
+
+<style>
+  .row {
+    --card-ratio: 360 / 374;
+
+    margin-block-start: 32px;
+  }
+
+  @media (width >= 1024px) {
+    .row {
+      margin-block-start: 51px;
+    }
+  }
+</style>
