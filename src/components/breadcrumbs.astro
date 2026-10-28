@@ -1,0 +1,119 @@
+---
+import Chevron from '@/img/icons/chevron-right.svg'
+
+interface Crumb {
+  href?: string
+  label: string
+}
+
+interface Props {
+  items: Crumb[]
+}
+
+const { items } = Astro.props
+---
+
+<nav
+  class="breadcrumbs"
+  aria-label="Путь по разделам"
+  data-enter
+  data-enter-step="1"
+>
+  <ol class="list">
+    {
+      items.map((item, index) => (
+        <li class="item">
+          {index > 0 && <Chevron class="separator" aria-hidden="true" />}
+          {item.href === undefined ? (
+            <span class="current" aria-current="page">
+              {item.label}
+            </span>
+          ) : (
+            <a class="link" href={item.href}>
+              {item.label}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .breadcrumbs {
+    margin-block-start: 24px;
+  }
+
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    font-weight: 500;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+  }
+
+  .separator {
+    flex: none;
+    inline-size: 4px;
+    block-size: 7px;
+    margin-inline: 14px;
+  }
+
+  .link,
+  .current {
+    display: inline-block;
+    padding-block: 4px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .link {
+    color: var(--color-text-disabled);
+    transition: color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .current {
+    color: var(--color-text-muted);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover {
+      color: var(--color-text-muted);
+    }
+  }
+
+  .link:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+  }
+
+  .link:active {
+    color: var(--color-text);
+    transition-duration: 90ms;
+  }
+
+  @media (width >= 1024px) {
+    .breadcrumbs {
+      margin-block-start: 57px;
+    }
+
+    .list {
+      line-height: 1;
+    }
+
+    .link,
+    .current {
+      padding-block: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .link {
+      transition: none;
+    }
+  }
+</style>

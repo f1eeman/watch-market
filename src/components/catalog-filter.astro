@@ -1,0 +1,446 @@
+---
+import Button from '@/components/button.astro'
+import Price from '@/components/price.astro'
+import Check from '@/img/icons/check.svg'
+
+const BRANDS = [
+  { label: 'Techne', checked: true },
+  { label: 'Rado', checked: true },
+  { label: 'Bvlgari', checked: true },
+  { label: 'Tissot', checked: false },
+  { label: 'Omega', checked: false },
+  { label: 'Montblanc', checked: false },
+]
+
+const FACETS = [
+  {
+    name: 'механизм',
+    options: ['Кварцевый', 'Механический', 'Автоматический'],
+  },
+  { name: 'материал', options: ['Сталь', 'Титан', 'Керамика', 'Золото'] },
+  {
+    name: 'цвет',
+    options: ['Чёрный', 'Серебристый', 'Золотистый', 'Коричневый'],
+  },
+]
+
+const PRICE = { min: 12000, max: 90000, step: 1000 }
+---
+
+<details class="panel" open>
+  <summary class="panel-toggle">
+    <span class="panel-title">Фильтр</span>
+    <span class="sign" aria-hidden="true"></span>
+  </summary>
+
+  <form class="panel-body">
+    <details class="group" open>
+      <summary class="head">
+        <span class="title">стоимость</span>
+        <span class="sign" aria-hidden="true"></span>
+      </summary>
+
+      <div class="range" data-range>
+        <div class="track" data-range-track>
+          <input
+            class="handle"
+            type="range"
+            data-range-from
+            min={PRICE.min}
+            max={PRICE.max}
+            step={PRICE.step}
+            value={PRICE.min}
+            aria-label="Цена от"
+          />
+          <input
+            class="handle"
+            type="range"
+            data-range-to
+            min={PRICE.min}
+            max={PRICE.max}
+            step={PRICE.step}
+            value={PRICE.max}
+            aria-label="Цена до"
+          />
+        </div>
+
+        <p class="figures">
+          <Price class="figure"><span data-range-from-out>12 000</span></Price>
+          <Price class="figure"><span data-range-to-out>90 000</span></Price>
+        </p>
+      </div>
+    </details>
+
+    <details class="group" open>
+      <summary class="head">
+        <span class="title">бренд</span>
+        <span class="sign" aria-hidden="true"></span>
+      </summary>
+
+      <ul class="options">
+        {
+          BRANDS.map((brand) => (
+            <li>
+              <label class="option">
+                <input
+                  class="box visually-hidden"
+                  type="checkbox"
+                  name="brand"
+                  value={brand.label}
+                  checked={brand.checked}
+                />
+                <span class="mark" aria-hidden="true">
+                  <Check class="tick" />
+                </span>
+                <span class="label">{brand.label}</span>
+              </label>
+            </li>
+          ))
+        }
+      </ul>
+    </details>
+
+    {
+      FACETS.map((facet) => (
+        <details class="group">
+          <summary class="head">
+            <span class="title">{facet.name}</span>
+            <span class="sign" aria-hidden="true" />
+          </summary>
+
+          <ul class="options">
+            {facet.options.map((option) => (
+              <li>
+                <label class="option">
+                  <input
+                    class="box visually-hidden"
+                    type="checkbox"
+                    name={facet.name}
+                    value={option}
+                  />
+                  <span class="mark" aria-hidden="true">
+                    <Check class="tick" />
+                  </span>
+                  <span class="label">{option}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ))
+    }
+
+    <Button type="reset" variant="outline" class="reset">сбросить фильтр</Button
+    >
+  </form>
+</details>
+
+<style>
+  .panel {
+    --handle: 10px;
+    --reach: calc(var(--handle) / 2);
+  }
+
+  .panel-toggle {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    min-block-size: 44px;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .panel-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .panel-toggle:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+  }
+
+  .panel-title {
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: capitalize;
+    color: var(--color-text-strong);
+  }
+
+  .panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-block-start: 20px;
+  }
+
+  .head {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    min-block-size: 44px;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .head::-webkit-details-marker {
+    display: none;
+  }
+
+  .head:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+  }
+
+  .title {
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: capitalize;
+    color: var(--color-text-strong);
+  }
+
+  .sign {
+    position: relative;
+    flex: none;
+    inline-size: 10px;
+    block-size: 10px;
+  }
+
+  .sign::before,
+  .sign::after {
+    content: '';
+    position: absolute;
+    background-color: var(--color-text);
+  }
+
+  .sign::before {
+    inset-block-start: 4.5px;
+    inset-inline: 0;
+    block-size: 1px;
+  }
+
+  .sign::after {
+    inset-inline-start: 4.5px;
+    inset-block: 0;
+    inline-size: 1px;
+    transition: scale 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  [open] > .head > .sign::after,
+  [open] > .panel-toggle > .sign::after {
+    scale: 1 0;
+  }
+
+  .range {
+    padding-block-start: 18px;
+  }
+
+  .track {
+    position: relative;
+    block-size: 10px;
+  }
+
+  .track::before,
+  .track::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 4.5px;
+    block-size: 1px;
+  }
+
+  .track::before {
+    inset-inline: 0;
+    background-color: var(--color-track);
+  }
+
+  .track::after {
+    inset-inline: var(--range-from, 0%) calc(100% - var(--range-to, 100%));
+    background-color: var(--color-text);
+  }
+
+  .handle {
+    position: absolute;
+    inset-block: 0;
+    inset-inline: calc(-1 * var(--reach));
+    inline-size: calc(100% + var(--handle));
+    appearance: none;
+    background: none;
+  }
+
+  .handle::-webkit-slider-thumb {
+    appearance: none;
+    inline-size: var(--handle);
+    block-size: var(--handle);
+    border: 1px solid var(--color-text);
+    border-radius: 50%;
+    background-color: var(--color-page);
+    cursor: pointer;
+  }
+
+  .handle::-moz-range-thumb {
+    inline-size: var(--handle);
+    block-size: var(--handle);
+    border: 1px solid var(--color-text);
+    border-radius: 50%;
+    background-color: var(--color-page);
+    cursor: pointer;
+  }
+
+  .handle:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid var(--color-text);
+    outline-offset: 3px;
+  }
+
+  .handle:focus-visible::-moz-range-thumb {
+    outline: 2px solid var(--color-text);
+    outline-offset: 3px;
+  }
+
+  .figures {
+    display: flex;
+    justify-content: space-between;
+    margin-block-start: 9px;
+  }
+
+  .figure {
+    font-size: 12px;
+    line-height: 1;
+    color: var(--color-text-soft);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-block-start: 14px;
+  }
+
+  .option {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    min-block-size: 26px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .mark {
+    display: grid;
+    flex: none;
+    place-content: center;
+    inline-size: 13px;
+    block-size: 13px;
+    border: 1px solid var(--color-field-border);
+    transition:
+      background-color 180ms cubic-bezier(0.2, 0.8, 0.25, 1),
+      border-color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .tick {
+    inline-size: 6px;
+    block-size: 4px;
+    opacity: 0;
+    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .box:checked + .mark {
+    border-color: #6f6e6d;
+    background-color: #6f6e6d;
+  }
+
+  .box:checked + .mark .tick {
+    opacity: 1;
+  }
+
+  .box:focus-visible + .mark {
+    outline: 2px solid var(--color-text);
+    outline-offset: 3px;
+  }
+
+  .label {
+    font-size: 12px;
+    text-transform: capitalize;
+    color: #6f6e6d;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .option:hover .mark {
+      border-color: var(--color-text);
+    }
+  }
+
+  .reset {
+    inline-size: 100%;
+    margin-block-start: 15px;
+  }
+
+  @media (width >= 1024px) {
+    .panel-toggle {
+      display: none;
+    }
+
+    .panel::details-content {
+      block-size: auto;
+      content-visibility: visible;
+      transition: none;
+    }
+
+    .panel-body {
+      gap: 14px;
+      padding-block-start: 0;
+    }
+
+    .head {
+      min-block-size: 13px;
+    }
+
+    .options {
+      gap: 7px;
+      padding-block-start: 14px;
+    }
+
+    .option {
+      min-block-size: 13px;
+    }
+
+    .reset {
+      margin-block-start: 21px;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .panel::details-content,
+    .group::details-content {
+      box-sizing: border-box;
+      margin-inline: calc(-1 * var(--reach));
+      block-size: 0;
+      padding-inline: var(--reach);
+      overflow: hidden;
+      transition:
+        block-size 180ms cubic-bezier(0.2, 0.8, 0.25, 1),
+        content-visibility 180ms allow-discrete;
+    }
+
+    .panel[open]::details-content,
+    .group[open]::details-content {
+      block-size: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sign::after,
+    .mark,
+    .tick {
+      transition: none;
+    }
+  }
+</style>
