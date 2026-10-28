@@ -1,0 +1,323 @@
+---
+import Button from '@/components/button.astro'
+import Price from '@/components/price.astro'
+import Heart from '@/img/icons/heart.svg'
+import HeartFilled from '@/img/icons/heart-filled.svg'
+import { PRODUCT } from '@/data/products'
+
+const DESCRIPTION = [
+  'Наручные часы KULTE, разработанные датским дизайнером Хэннингом Коппелем, были выпущены в 1982 году. Они были встречены аплодисментами, а дизайн считался революционным.',
+  'Общая эстетика минималистична, а острые, плавные линии корпуса стали легендарными. Механизм Swiss Made обеспечивает высокий уровень технических характеристик.',
+  'Наручные часы KULTE — это образец датского дизайнерского наследия, история баланса и точности как внутри, так и снаружи.',
+]
+
+const SPECS = [
+  { term: 'Бренд', value: 'Georg Jensen' },
+  { term: 'Диаметр', value: '26 мм' },
+]
+---
+
+<div class="info" data-tabs data-enter data-enter-step="3">
+  <div class="head">
+    <h1 class="title">KULTE, 26 ММ</h1>
+
+    <button
+      class="favourite"
+      type="button"
+      data-bag="favourites"
+      data-bag-id={PRODUCT.id}
+      data-bag-label-off="Добавить в избранное"
+      data-bag-label-on="Убрать из избранного"
+      aria-pressed="false"
+    >
+      <span class="visually-hidden" data-bag-label>Добавить в избранное</span>
+      <Heart class="heart glyph-off" />
+      <HeartFilled class="heart glyph-on" />
+    </button>
+  </div>
+
+  <Price class="price">12 700</Price>
+
+  <div class="tablist" role="tablist" aria-label="Сведения о товаре">
+    <button
+      class="tab"
+      type="button"
+      role="tab"
+      id="tab-about"
+      aria-controls="panel-about"
+      data-tabs-tab
+    >
+      Описание
+    </button>
+    <button
+      class="tab"
+      type="button"
+      role="tab"
+      id="tab-specs"
+      aria-controls="panel-specs"
+      data-tabs-tab
+    >
+      Технические характеристики
+    </button>
+
+    <span class="marker" data-tabs-marker aria-hidden="true"></span>
+  </div>
+
+  <div class="panels" data-tabs-panels>
+    <div
+      class="panel"
+      role="tabpanel"
+      id="panel-about"
+      aria-labelledby="tab-about"
+      tabindex="0"
+      data-tabs-panel
+    >
+      {DESCRIPTION.map((paragraph) => <p class="text">{paragraph}</p>)}
+    </div>
+
+    <div
+      class="panel"
+      role="tabpanel"
+      id="panel-specs"
+      aria-labelledby="tab-specs"
+      tabindex="0"
+      data-tabs-panel
+    >
+      <dl class="specs">
+        {
+          SPECS.map((spec) => (
+            <div class="spec">
+              <dt class="spec-term">{spec.term}</dt>
+              <dd class="spec-value">{spec.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+
+  <Button
+    class="cart"
+    data-bag="cart"
+    data-bag-id={PRODUCT.id}
+    data-bag-label-off="Положить в корзину"
+    data-bag-label-on="Убрать из корзины"
+    aria-pressed="false"
+  >
+    <span class="visually-hidden" data-bag-label>Положить в корзину</span>
+    <span class="glyph-off" aria-hidden="true">В корзину</span>
+    <span class="glyph-on" aria-hidden="true">Убрать из корзины</span>
+  </Button>
+</div>
+
+<style>
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+    background-color: var(--color-surface);
+  }
+
+  .head {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    align-self: stretch;
+    justify-content: space-between;
+  }
+
+  .title {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.3;
+    letter-spacing: 0.05em;
+    color: var(--color-text-strong);
+  }
+
+  .favourite {
+    position: relative;
+    display: grid;
+    flex: none;
+    place-content: center;
+    inline-size: 44px;
+    block-size: 44px;
+    margin-block-start: -8px;
+    margin-inline-end: -8px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .heart {
+    inline-size: 21px;
+    block-size: 17px;
+  }
+
+  .favourite:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: -6px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .favourite:hover {
+      opacity: 0.6;
+    }
+  }
+
+  .favourite:active {
+    opacity: 0.45;
+    transition-duration: 90ms;
+  }
+
+  .price {
+    margin-block-start: 12px;
+    font-size: 24px;
+    line-height: 1;
+    color: #686868;
+  }
+
+  .tablist {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-block-start: 40px;
+  }
+
+  .marker {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: var(--marker-size, 0);
+    block-size: 1px;
+    background-color: var(--color-divider);
+    translate: var(--marker-x, 0) var(--marker-y, 0);
+  }
+
+  .tab {
+    position: relative;
+    min-block-size: 44px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.3;
+    text-align: start;
+    color: var(--color-text-strong);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .tab:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+  }
+
+  .panels {
+    position: relative;
+    margin-block-start: 16px;
+  }
+
+  .panel:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 4px;
+  }
+
+  .text {
+    max-inline-size: 442px;
+    font-weight: 300;
+    line-height: 23px;
+    color: #000;
+  }
+
+  .text + .text {
+    margin-block-start: 23px;
+  }
+
+  .specs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .spec {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .spec-term {
+    min-inline-size: 96px;
+    font-weight: 300;
+    color: var(--color-text-price);
+  }
+
+  .spec-value {
+    font-weight: 500;
+    color: var(--color-text-strong);
+  }
+
+  .glyph-on {
+    display: none;
+  }
+
+  .favourite[aria-pressed='true'] .heart {
+    opacity: 1;
+  }
+
+  [aria-pressed='true'] > .glyph-off {
+    display: none;
+  }
+
+  [aria-pressed='true'] > .glyph-on {
+    display: block;
+  }
+
+  .cart {
+    margin-block-start: 32px;
+    background-color: #31302c;
+    font-weight: 700;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cart:hover {
+      background-color: color-mix(in srgb, #31302c 88%, #fff);
+    }
+  }
+
+  .cart:active {
+    background-color: color-mix(in srgb, #31302c 85%, #000);
+  }
+
+  @media (width >= 1024px) {
+    .info {
+      padding: 49px 59px;
+    }
+
+    .favourite {
+      margin-inline-end: -30px;
+    }
+
+    .price {
+      margin-block-start: 20px;
+    }
+
+    .tablist {
+      gap: 40px;
+      margin-block-start: 51px;
+    }
+
+    .panels {
+      margin-block-start: 12px;
+    }
+
+    .cart {
+      margin-block-start: 54px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .favourite {
+      transition: none;
+    }
+  }
+</style>

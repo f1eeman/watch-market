@@ -1,0 +1,261 @@
+---
+import { Image } from 'astro:assets'
+import ArrowLeft from '@/img/icons/arrow-left.svg'
+import ArrowRight from '@/img/icons/arrow-right.svg'
+import main from '@/img/product/main.png'
+import thumb2 from '@/img/product/thumb-2.png'
+import thumb3 from '@/img/product/thumb-3.png'
+import thumb4 from '@/img/product/thumb-4.png'
+
+const SHOTS = [
+  {
+    image: main,
+    alt: 'Часы KULTE, вид спереди на чёрном сетчатом браслете',
+    crop: { left: '0', top: '0', width: '100%', height: '100%' },
+  },
+  {
+    image: thumb2,
+    alt: 'Часы KULTE, вид сбоку',
+    crop: {
+      left: '-25.98%',
+      top: '-19.07%',
+      width: '141.73%',
+      height: '146.4%',
+    },
+  },
+  {
+    image: thumb3,
+    alt: 'Часы KULTE, корпус под углом',
+    crop: { left: '-2.74%', top: '0', width: '96.81%', height: '100%' },
+  },
+  {
+    image: thumb4,
+    alt: 'Часы KULTE, циферблат крупно',
+    crop: { left: '0', top: '0', width: '100%', height: '100%' },
+  },
+]
+---
+
+<div class="gallery" data-gallery data-enter data-enter-step="2">
+  <div class="stage">
+    <button
+      class="arrow prev"
+      type="button"
+      data-gallery-prev
+      aria-label="Предыдущее фото"
+    >
+      <ArrowLeft class="arrow-glyph" />
+    </button>
+
+    <div class="frames">
+      {
+        SHOTS.map((shot) => (
+          <Image
+            class="slide"
+            data-gallery-slide
+            src={shot.image}
+            alt={shot.alt}
+            widths={[423, 846]}
+            sizes="(width >= 1024px) 423px, 88vw"
+            quality={88}
+            loading="eager"
+          />
+        ))
+      }
+    </div>
+
+    <button
+      class="arrow next"
+      type="button"
+      data-gallery-next
+      aria-label="Следующее фото"
+    >
+      <ArrowRight class="arrow-glyph" />
+    </button>
+  </div>
+
+  <ul class="thumbs">
+    {
+      SHOTS.map((shot, index) => (
+        <li class="thumb-cell">
+          <button class="thumb" type="button" data-gallery-thumb>
+            <span class="visually-hidden">Фото {index + 1}</span>
+            <span class="thumb-frame">
+              <Image
+                class="thumb-shot"
+                src={shot.image}
+                alt=""
+                widths={[180, 360]}
+                sizes="(width >= 1024px) 180px, 31vw"
+                quality={88}
+                loading="lazy"
+                style={`inset-inline-start:${shot.crop.left};inset-block-start:${shot.crop.top};inline-size:${shot.crop.width};block-size:${shot.crop.height}`}
+              />
+            </span>
+            <span class="film" aria-hidden="true" />
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .frames {
+    display: grid;
+    inline-size: 100%;
+    aspect-ratio: 423 / 520;
+  }
+
+  .slide {
+    grid-area: 1 / 1;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: contain;
+    visibility: hidden;
+    opacity: 0;
+    filter: drop-shadow(var(--shadow-tile));
+    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .slide[data-gallery-current] {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .gallery[data-gallery-flip] .slide {
+    transition: none;
+  }
+
+  .arrow {
+    position: absolute;
+    z-index: 1;
+    display: grid;
+    place-content: center;
+    inline-size: 44px;
+    block-size: 44px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .prev {
+    inset-inline-start: 0;
+  }
+
+  .next {
+    inset-inline-end: 0;
+  }
+
+  .arrow-glyph {
+    inline-size: 12px;
+    block-size: 23px;
+  }
+
+  .arrow:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: -6px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .arrow:hover {
+      opacity: 0.55;
+    }
+  }
+
+  .arrow:active {
+    opacity: 0.4;
+    transition-duration: 90ms;
+  }
+
+  .thumbs {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 17px;
+    margin-block-start: 22px;
+  }
+
+  .thumb {
+    position: relative;
+    display: block;
+    inline-size: 100%;
+    aspect-ratio: 127 / 121;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .thumb-frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .thumb-shot {
+    position: absolute;
+    max-inline-size: none;
+    filter: drop-shadow(var(--shadow-tile));
+  }
+
+  .film {
+    position: absolute;
+    inset: 0;
+    background-color: rgb(100 100 100 / 15%);
+    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .thumb[aria-current] .film {
+    opacity: 0;
+  }
+
+  .thumb:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .thumb:hover .film {
+      opacity: 0.4;
+    }
+  }
+
+  @media (width >= 1024px) {
+    .frames {
+      inline-size: 75.54%;
+      margin-inline-start: 9.64%;
+    }
+
+    .arrow {
+      inline-size: 12px;
+      block-size: 23px;
+    }
+
+    .arrow::after {
+      content: '';
+      position: absolute;
+      inset: -16px -11px;
+    }
+
+    .prev {
+      inset-inline-start: 0.71%;
+    }
+
+    .arrow:focus-visible {
+      outline-offset: 8px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide,
+    .arrow,
+    .film {
+      transition: none;
+    }
+  }
+</style>

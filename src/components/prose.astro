@@ -1,0 +1,129 @@
+---
+import type { Block } from '@/data/sections'
+
+interface Props {
+  blocks: Block[]
+}
+
+const { blocks } = Astro.props
+---
+
+<div class="prose">
+  {
+    blocks.map((block) =>
+      block.kind === 'text' ? (
+        <section class="block">
+          {block.heading !== null && (
+            <h2 class="block-title">{block.heading}</h2>
+          )}
+          <p class="text">{block.text}</p>
+        </section>
+      ) : block.kind === 'list' ? (
+        <section class="block">
+          <h2 class="block-title">{block.heading}</h2>
+          <ul class="list">
+            {block.items.map((item) => (
+              <li class="item">{item}</li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        <section class="block">
+          <h2 class="block-title">{block.heading}</h2>
+          <ol class="steps">
+            {block.items.map((item, at) => (
+              <li class="step">
+                <span class="num" aria-hidden="true">
+                  {String(at + 1).padStart(2, '0')}
+                </span>
+                <span class="step-text">{item}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ),
+    )
+  }
+</div>
+
+<style>
+  .block + .block {
+    margin-block-start: var(--block-gap);
+  }
+
+  .block-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  .text {
+    max-inline-size: 60ch;
+    margin-block-start: 16px;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-text-strong);
+  }
+
+  .list,
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-inline-size: 60ch;
+    margin-block-start: 20px;
+  }
+
+  .item {
+    position: relative;
+    padding-inline-start: 34px;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-text-strong);
+  }
+
+  .item::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 12px;
+    inline-size: 20px;
+    block-size: 1px;
+    background-color: var(--color-rule);
+  }
+
+  .step {
+    display: flex;
+    gap: 18px;
+    align-items: baseline;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-text-strong);
+  }
+
+  .num {
+    flex: none;
+    inline-size: 24px;
+    font-family: var(--font-figure);
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-accent);
+  }
+
+  @media (width >= 1024px) {
+    .block-title {
+      font-size: 32px;
+    }
+
+    .text {
+      margin-block-start: 20px;
+    }
+
+    .list,
+    .steps {
+      margin-block-start: 24px;
+    }
+  }
+</style>
