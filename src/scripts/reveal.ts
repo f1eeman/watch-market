@@ -84,7 +84,12 @@ const byQuery = (
   return scopes
 }
 
+const inFrame = (block: HTMLElement): boolean =>
+  block.getBoundingClientRect().top < window.innerHeight
+
 const reveal = (block: HTMLElement, mode: Mode): void => {
+  if (inFrame(block)) return
+
   const direction = block.dataset['reveal']
   const from = offsetsOf(BASE.shift)[isDirection(direction) ? direction : 'up']
   const own = block.dataset['revealStart']
