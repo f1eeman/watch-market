@@ -9,17 +9,17 @@ const { title, description } = Astro.props
 const site = Astro.site as URL
 const canonical = new URL(Astro.url.pathname, site)
 
-const SITE_NAME = 'Название продукта'
+const SITE_NAME = 'CONQUEST'
 const OG_IMAGE = { path: '/og-image.png', width: 1200, height: 630 }
 const ogImage = new URL(OG_IMAGE.path, site)
 
 const ORGANIZATION = {
-  name: 'Название организации',
-  legalName: 'Полное наименование организации',
-  url: 'https://example.invalid/',
-  telephone: '+70000000000',
-  email: 'mail@example.invalid',
-  country: 'KZ',
+  name: 'CONQUEST',
+  legalName: 'CONQUEST, магазин швейцарских часов',
+  url: 'https://conquest.watch.ru/',
+  telephone: '+74994504797',
+  email: 'info@conquest.watch.ru',
+  country: 'RU',
 }
 
 const schema = {

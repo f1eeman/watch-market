@@ -1,34 +1,38 @@
 import { defineConfig, fontProviders } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
 
+const subsets = ['latin', 'cyrillic']
+
 export default defineConfig({
-  site: 'https://example.invalid',
+  site: 'https://conquest.watch.ru',
   integrations: [sitemap()],
   fonts: [
     {
-      provider: fontProviders.local(),
-      name: 'Open Sans',
-      cssVariable: '--font-open-sans',
+      provider: fontProviders.google(),
+      name: 'Roboto',
+      cssVariable: '--font-roboto',
       fallbacks: ['sans-serif'],
-      options: {
-        variants: [
-          {
-            weight: 400,
-            style: 'normal',
-            src: ['./src/assets/fonts/open-sans-400.woff2'],
-          },
-          {
-            weight: 600,
-            style: 'normal',
-            src: ['./src/assets/fonts/open-sans-600.woff2'],
-          },
-          {
-            weight: 700,
-            style: 'normal',
-            src: ['./src/assets/fonts/open-sans-700.woff2'],
-          },
-        ],
-      },
+      weights: [300, 400, 500, 700],
+      styles: ['normal'],
+      subsets,
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'Playfair Display',
+      cssVariable: '--font-playfair',
+      fallbacks: ['serif'],
+      weights: [400, 700],
+      styles: ['normal'],
+      subsets,
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'Prata',
+      cssVariable: '--font-prata',
+      fallbacks: ['serif'],
+      weights: [400],
+      styles: ['normal'],
+      subsets,
     },
   ],
 })
