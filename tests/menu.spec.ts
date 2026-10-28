@@ -9,7 +9,7 @@ const menuOf = (page: Page) => page.locator('[data-menu]')
 const toggleOf = (page: Page) => page.locator('[data-menu-toggle]')
 const panelOf = (page: Page) => page.locator('[data-menu] nav')
 const linkOf = (page: Page) =>
-  menuOf(page).getByRole('link', { name: 'Заявка' })
+  menuOf(page).getByRole('link', { name: 'Контакты' })
 
 test.describe('мобильное меню', () => {
   test.beforeEach(async ({ page }) => {
@@ -66,7 +66,7 @@ test.describe('мобильное меню', () => {
     await linkOf(page).click()
 
     await expect(menuOf(page)).not.toHaveAttribute('open')
-    expect(new URL(page.url()).hash).toBe('#request')
+    expect(new URL(page.url()).hash).toBe('#contacts')
   })
 
   test('клик мимо панели закрывает меню', async ({ page }) => {

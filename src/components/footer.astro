@@ -1,57 +1,92 @@
 ---
-const YEAR = new Date().getFullYear()
+import Logo from '@/components/logo.astro'
+import { FOOTER } from '@/data/sections'
 
-const COMPANY = 'Название организации'
-const EMAIL = 'mail@example.invalid'
-const PHONE = { href: '+70000000000', label: '+7 000 000 00 00' }
+const PHONE = { href: '+74994504797', label: '8 (499) 450-47-97' }
+const EMAIL = 'info@conquest.watch.ru'
 ---
 
 <footer class="footer">
-  <div class="container inner">
-    <section class="contacts" id="contacts" aria-labelledby="contacts-title">
-      <h2 class="title" id="contacts-title">Контакты</h2>
-      <ul class="list">
-        <li>
-          <a class="link" href={`mailto:${EMAIL}`}>{EMAIL}</a>
-        </li>
-        <li>
-          <a class="link" href={`tel:${PHONE.href}`}>{PHONE.label}</a>
-        </li>
-      </ul>
-    </section>
+  <div class="container">
+    <div class="inner">
+      <section class="contacts" id="contacts" aria-labelledby="contacts-title">
+        <h2 class="visually-hidden" id="contacts-title">Контакты</h2>
+        <Logo place="footer" />
+        <ul class="list">
+          <li>
+            <a class="link" href={`tel:${PHONE.href}`}>{PHONE.label}</a>
+          </li>
+          <li>
+            <a class="link" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+          </li>
+        </ul>
+      </section>
 
-    <p class="copyright">© {YEAR} {COMPANY}</p>
+      {
+        FOOTER.map((column) => (
+          <nav class="column" aria-label={column.title}>
+            <p class="title">{column.title}</p>
+            <ul class="list">
+              {column.links.map((link) => (
+                <li>
+                  <a class="link" href={link.href}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    padding-block: 40px;
+    padding-block: 48px;
     background-color: var(--color-surface-inverse);
-    color: var(--color-text-inverse);
+    color: var(--color-text-on-inverse);
   }
 
   .inner {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+    display: grid;
+    gap: 32px;
+    max-inline-size: 1002px;
+    margin-inline: auto;
+  }
+
+  .contacts .list {
+    margin-block-start: 23px;
   }
 
   .title {
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
   }
 
   .list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-block-start: 16px;
+    gap: 13px;
+  }
+
+  .list li {
+    display: flex;
+  }
+
+  .column .list {
+    margin-block-start: 24px;
   }
 
   .link {
-    color: var(--color-text-inverse-muted);
+    display: inline-block;
+    font-size: 12px;
+    line-height: 1;
+    color: var(--color-text-on-inverse-muted);
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     transition: color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
@@ -59,24 +94,45 @@ const PHONE = { href: '+70000000000', label: '+7 000 000 00 00' }
 
   @media (hover: hover) and (pointer: fine) {
     .link:hover {
-      color: var(--color-text-inverse);
+      color: var(--color-text-on-inverse);
     }
   }
 
   .link:focus-visible {
-    outline: 2px solid var(--color-text-inverse);
+    outline: 2px solid var(--color-text-on-inverse);
     outline-offset: 3px;
   }
 
   .link:active {
-    color: var(--color-text-inverse);
+    color: var(--color-text-on-inverse);
     transition-duration: 90ms;
   }
 
-  .copyright {
-    color: var(--color-text-inverse-muted);
-    font-size: 14px;
-    line-height: 20px;
+  @media (width >= 640px) {
+    .inner {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px;
+    }
+  }
+
+  @media (width >= 1024px) {
+    .footer {
+      padding-block: 67px;
+    }
+
+    .inner {
+      display: flex;
+      gap: 40px;
+      justify-content: space-between;
+    }
+
+    .column {
+      margin-block-start: 12px;
+    }
+
+    .column .list {
+      margin-block-start: 30px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
