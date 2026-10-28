@@ -1,0 +1,19 @@
+---
+import Section from '@/layouts/Section.astro'
+import PromoTile from '@/components/promo-tile.astro'
+import Popular from '@/components/popular.astro'
+---
+
+<Section slug="sale" current="sale">
+  <div class="offer">
+    <PromoTile />
+  </div>
+
+  <Popular slot="after" motion="enter" />
+</Section>
+
+<style>
+  .offer {
+    max-inline-size: 252px;
+  }
+</style>

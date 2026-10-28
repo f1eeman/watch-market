@@ -1,0 +1,93 @@
+---
+import Button from '@/components/button.astro'
+
+const PHONE = { href: '+74994504797', label: '8 (499) 450-47-97' }
+const EMAIL = 'info@conquest.watch.ru'
+---
+
+<section class="help section" data-region aria-labelledby="help-title">
+  <div class="container inner">
+    <h2 class="headline" id="help-title" data-sweep>Контакты</h2>
+
+    <ul class="lines">
+      <li>
+        <a class="line" href={`tel:${PHONE.href}`}>{PHONE.label}</a>
+      </li>
+      <li>
+        <a class="line" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      </li>
+    </ul>
+
+    <Button as="a" href="/catalog/" size="lg" class="action">
+      Смотреть каталог
+    </Button>
+  </div>
+</section>
+
+<style>
+  .inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 32px;
+    background-color: var(--color-surface);
+  }
+
+  .lines {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-block-start: 24px;
+  }
+
+  .line {
+    display: inline-block;
+    font-family: var(--font-figure);
+    font-size: 16px;
+    line-height: 1;
+    color: var(--color-text);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .line:hover {
+      color: var(--color-accent);
+    }
+  }
+
+  .line:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 3px;
+  }
+
+  .line:active {
+    color: var(--color-accent);
+    transition-duration: 90ms;
+  }
+
+  .action {
+    margin-block-start: 32px;
+  }
+
+  @media (width >= 1024px) {
+    .inner {
+      padding: 49px 59px;
+    }
+
+    .lines {
+      margin-block-start: 32px;
+    }
+
+    .action {
+      margin-block-start: 45px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .line {
+      transition: none;
+    }
+  }
+</style>

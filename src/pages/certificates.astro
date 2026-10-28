@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets'
+import Section from '@/layouts/Section.astro'
+import photo from '@/img/banner/photo.jpg'
+
+const BRANDS = ['Techne', 'Rado', 'Bvlgari', 'Tissot', 'Omega', 'Montblanc']
+---
+
+<Section slug="certificates">
+  <div class="proof">
+    <Image
+      class="shot"
+      src={photo}
+      alt="Циферблат швейцарских часов с отметкой Swiss Made"
+      widths={[640, 1200]}
+      sizes="(width >= 1024px) 47vw, 92vw"
+      quality={88}
+      loading="lazy"
+    />
+
+    <div class="brands">
+      <h2 class="brands-title">Бренды в каталоге</h2>
+      <ul class="list">
+        {
+          BRANDS.map((brand) => (
+            <li>
+              <a class="brand" href="/catalog/">
+                {brand}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .proof {
+    display: grid;
+    gap: 32px;
+  }
+
+  .shot {
+    inline-size: 100%;
+    aspect-ratio: 521 / 414;
+    object-fit: cover;
+  }
+
+  .brands-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-block-start: 24px;
+  }
+
+  .brand {
+    display: inline-block;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-strong);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .brand:hover {
+      color: var(--color-accent);
+    }
+  }
+
+  .brand:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 3px;
+  }
+
+  .brand:active {
+    color: var(--color-accent);
+    transition-duration: 90ms;
+  }
+
+  @media (width >= 1024px) {
+    .proof {
+      grid-template-columns: minmax(0, 521fr) minmax(0, 376fr);
+      gap: 69px;
+      align-items: start;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand {
+      transition: none;
+    }
+  }
+</style>

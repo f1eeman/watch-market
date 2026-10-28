@@ -1,0 +1,63 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Help from '@/components/help.astro'
+
+const title = 'Страница не найдена — CONQUEST'
+const description =
+  'Такой страницы нет. Каталог швейцарских часов и контакты магазина — по ссылкам ниже.'
+---
+
+<Layout {title} {description}>
+  <section class="lost section" aria-labelledby="lost-title">
+    <div class="container">
+      <p class="code" data-enter="fade">404</p>
+      <h1 class="headline title" id="lost-title" data-enter data-enter-step="2">
+        Страница не найдена
+      </h1>
+      <p class="lead" data-enter data-enter-step="3">
+        Ссылка устарела или адрес набран с ошибкой.
+      </p>
+    </div>
+  </section>
+
+  <Help />
+</Layout>
+
+<style>
+  .lost {
+    padding-block-start: 24px;
+  }
+
+  .code {
+    font-family: var(--font-figure);
+    font-size: 45px;
+    line-height: 1;
+    color: var(--color-accent);
+  }
+
+  .title {
+    margin-block-start: 20px;
+  }
+
+  .lead {
+    max-inline-size: 60ch;
+    margin-block-start: 20px;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-text-strong);
+  }
+
+  @media (width >= 1024px) {
+    .lost {
+      padding-block-start: 57px;
+    }
+
+    .title {
+      margin-block-start: 24px;
+    }
+
+    .lead {
+      margin-block-start: 24px;
+    }
+  }
+</style>

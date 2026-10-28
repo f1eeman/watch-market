@@ -1,0 +1,12 @@
+---
+import Section from '@/layouts/Section.astro'
+import { WRITTEN } from '@/data/sections'
+
+export function getStaticPaths() {
+  return WRITTEN.map((section) => ({ params: { section: section.slug } }))
+}
+
+const { section } = Astro.params
+---
+
+<Section slug={String(section)} />
