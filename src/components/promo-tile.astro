@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets'
+import watch from '@/img/catalog/promo-watch.png'
+---
+
+<div class="tile">
+  <Image
+    class="shot"
+    src={watch}
+    alt=""
+    aria-hidden="true"
+    widths={[244, 488]}
+    sizes="(width >= 1100px) 244px, (width >= 640px) 43vw, 85vw"
+    quality={88}
+    loading="lazy"
+  />
+
+  <p class="text">
+    <span class="rate">-20%</span>
+    <span class="caption">на вторую позицию в чеке</span>
+  </p>
+</div>
+
+<style>
+  .tile {
+    position: relative;
+    aspect-ratio: 252 / 300;
+    background-color: var(--color-accent);
+    overflow: hidden;
+  }
+
+  .shot {
+    position: absolute;
+    max-inline-size: none;
+    inset-inline-start: 50.8%;
+    inset-block-start: -2.67%;
+    inline-size: 96.63%;
+    height: auto;
+    filter: drop-shadow(var(--shadow-photo));
+  }
+
+  .text {
+    position: absolute;
+    inset-inline-start: 15.08%;
+    inset-block-start: 28.33%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    inline-size: 42.06%;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-text-on-inverse);
+  }
+
+  .rate {
+    font-size: 45px;
+    line-height: 1;
+    letter-spacing: 0.03em;
+  }
+
+  .caption {
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+  }
+</style>

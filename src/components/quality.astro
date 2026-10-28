@@ -1,0 +1,281 @@
+---
+import { Image } from 'astro:assets'
+import Button from '@/components/button.astro'
+import ArrowLeftSm from '@/img/icons/arrow-left-sm.svg'
+import ArrowRightSm from '@/img/icons/arrow-right-sm.svg'
+import photo from '@/img/banner/photo.jpg'
+---
+
+<section
+  class="quality section"
+  data-band
+  data-parallax-scene
+  data-stroke-scene
+  aria-labelledby="quality-title"
+>
+  <span class="panes" aria-hidden="true">
+    <svg
+      class="ring ring-near"
+      viewBox="0 0 364 364"
+      fill="none"
+      data-parallax-rotate="10"
+    >
+      <circle
+        cx="182"
+        cy="182"
+        r="181.5"
+        stroke="url(#quality-arc-near)"
+        data-stroke></circle>
+      <defs>
+        <linearGradient
+          id="quality-arc-near"
+          x1="0"
+          y1="182"
+          x2="364"
+          y2="182"
+          gradientUnits="userSpaceOnUse"
+          gradientTransform="rotate(-28.35 182 182)"
+        >
+          <stop stop-color="var(--color-accent)"></stop>
+          <stop offset="1" stop-color="var(--color-accent)" stop-opacity="0"
+          ></stop>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <svg
+      class="ring ring-far"
+      viewBox="0 0 743 743"
+      fill="none"
+      data-parallax-rotate="-8"
+    >
+      <circle
+        cx="371.5"
+        cy="371.5"
+        r="371"
+        stroke="url(#quality-arc-far)"
+        data-stroke></circle>
+      <defs>
+        <linearGradient
+          id="quality-arc-far"
+          x1="0"
+          y1="371.5"
+          x2="743"
+          y2="371.5"
+          gradientUnits="userSpaceOnUse"
+          gradientTransform="rotate(-28.35 371.5 371.5)"
+        >
+          <stop stop-color="var(--color-accent)"></stop>
+          <stop offset="1" stop-color="var(--color-accent)" stop-opacity="0"
+          ></stop>
+        </linearGradient>
+      </defs>
+    </svg>
+  </span>
+
+  <div class="container">
+    <div class="inner">
+      <Image
+        class="shot"
+        src={photo}
+        alt="Циферблат швейцарских часов с отметкой Swiss Made"
+        widths={[640, 1042, 1200]}
+        sizes="(width >= 1024px) 38vw, 92vw"
+        quality={88}
+        loading="lazy"
+        data-parallax-scale="1.06"
+      />
+
+      <div class="text">
+        <h2 class="headline" id="quality-title" data-sweep>
+          Подлинное качество
+        </h2>
+        <p class="lead">
+          Все часы производятся в Швейцарии и имеют сертификаты качества.
+          Настоящие швейцарские часы — это предмет гордости и престижа.
+        </p>
+        <Button
+          as="a"
+          href="/catalog/"
+          variant="accent"
+          size="lg"
+          class="action"
+        >
+          Смотреть каталог
+        </Button>
+      </div>
+
+      <div class="pager">
+        <button
+          class="pager-arrow"
+          type="button"
+          disabled
+          aria-label="Предыдущий баннер"
+        >
+          <ArrowLeftSm class="pager-glyph" />
+        </button>
+        <span class="pager-count">01</span>
+        <button
+          class="pager-arrow"
+          type="button"
+          disabled
+          aria-label="Следующий баннер"
+        >
+          <ArrowRightSm class="pager-glyph" />
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .quality {
+    position: relative;
+    padding-block: 40px;
+    background-color: var(--color-surface-warm);
+    overflow: hidden;
+  }
+
+  .panes {
+    display: none;
+  }
+
+  .shot {
+    inline-size: 100%;
+    height: auto;
+  }
+
+  .text {
+    margin-block-start: 32px;
+  }
+
+  .lead {
+    max-inline-size: 376px;
+    margin-block-start: 20px;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-text-strong);
+  }
+
+  .action {
+    margin-block-start: 28px;
+  }
+
+  .pager {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-block-start: 32px;
+  }
+
+  .pager-arrow {
+    position: relative;
+    display: grid;
+    place-content: center;
+    cursor: default;
+  }
+
+  .pager-arrow::after {
+    content: '';
+    position: absolute;
+    inset: -17px;
+  }
+
+  .pager-arrow:disabled {
+    opacity: 0.35;
+  }
+
+  .pager-glyph {
+    inline-size: 5px;
+    block-size: 10px;
+  }
+
+  .pager-count {
+    font-family: var(--font-figure);
+    font-size: 12px;
+    line-height: 1;
+    color: var(--color-text-soft);
+  }
+
+  @media (width >= 1024px) {
+    .quality {
+      padding-block: 0;
+      background: linear-gradient(
+        to right,
+        var(--color-surface-warm) 0 34.26%,
+        var(--color-surface) 34.26% 100%
+      );
+    }
+
+    .panes {
+      position: absolute;
+      display: block;
+      inset-block: 0;
+      inset-inline: 34.26% 0;
+      overflow: hidden;
+    }
+
+    .ring {
+      position: absolute;
+      aspect-ratio: 1;
+      overflow: visible;
+    }
+
+    .ring-near {
+      inset-inline-end: -150px;
+      inset-block-start: -148px;
+      inline-size: 364px;
+    }
+
+    .ring-far {
+      inset-inline-end: -522px;
+      inset-block-start: 13px;
+      inline-size: 743px;
+    }
+
+    .quality .container {
+      max-inline-size: none;
+      padding-inline: 0;
+    }
+
+    .inner {
+      position: relative;
+      max-inline-size: 1366px;
+      min-block-size: 519px;
+      margin-inline: auto;
+    }
+
+    .shot {
+      position: absolute;
+      inset-inline-start: 12.96%;
+      inset-block-start: 52px;
+      inline-size: 38.14%;
+      aspect-ratio: 521 / 414;
+      object-fit: cover;
+    }
+
+    .text {
+      position: absolute;
+      inset-inline-start: 56.15%;
+      inset-block-start: 140px;
+      inline-size: 27.53%;
+      margin-block-start: 0;
+    }
+
+    .lead {
+      max-inline-size: none;
+      margin-block-start: 38px;
+    }
+
+    .action {
+      margin-block-start: 45px;
+    }
+
+    .pager {
+      position: absolute;
+      inset-inline-start: 40.41%;
+      inset-block-start: 486px;
+      margin-block-start: 0;
+    }
+  }
+</style>

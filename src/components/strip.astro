@@ -1,0 +1,99 @@
+---
+interface Props {
+  title: string
+  id?: string
+  align?: 'start' | 'center'
+  allHref?: string
+}
+
+const { title, id, align = 'start', allHref } = Astro.props
+---
+
+<div class:list={['strip', `align-${align}`]}>
+  <h2 class="headline title" {id} data-sweep>{title}</h2>
+  {
+    allHref !== undefined && (
+      <a class="all" href={allHref}>
+        Смотреть все
+        <span class="line" aria-hidden="true" data-sweep-line />
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .strip {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .all {
+    position: relative;
+    align-self: flex-end;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1;
+    color: var(--color-text-strong);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .line {
+    position: absolute;
+    inset-inline: 3px 0;
+    inset-block-start: calc(100% + 11px);
+    block-size: 1px;
+    background-color: var(--color-divider);
+    transition: background-color 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .all:hover {
+      color: var(--color-text);
+    }
+
+    .all:hover .line {
+      background-color: currentcolor;
+    }
+  }
+
+  .all:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 4px;
+  }
+
+  .all:active {
+    color: var(--color-text);
+    transition-duration: 90ms;
+  }
+
+  @media (width >= 1024px) {
+    .align-center {
+      gap: 0;
+    }
+
+    .align-center .title {
+      text-align: center;
+    }
+
+    .align-start {
+      flex-direction: row;
+      gap: 24px;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .align-start .all {
+      align-self: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .all,
+    .line {
+      transition: none;
+    }
+  }
+</style>

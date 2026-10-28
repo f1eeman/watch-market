@@ -1,0 +1,214 @@
+---
+import { Image } from 'astro:assets'
+import Instagram from '@/img/icons/social-instagram.svg'
+import Facebook from '@/img/icons/social-facebook.svg'
+import Twitter from '@/img/icons/social-twitter.svg'
+import photo1 from '@/img/news/photo-1.jpg'
+import photo2 from '@/img/news/photo-2.jpg'
+import photo3 from '@/img/news/photo-3.jpg'
+
+const HANDLE = 'conquest_watch'
+
+const SOCIALS = [
+  {
+    key: 'instagram',
+    label: 'Instagram',
+    href: `https://www.instagram.com/${HANDLE}/`,
+    Glyph: Instagram,
+  },
+  {
+    key: 'facebook',
+    label: 'Facebook',
+    href: `https://www.facebook.com/${HANDLE}/`,
+    Glyph: Facebook,
+  },
+  {
+    key: 'twitter',
+    label: 'Twitter',
+    href: `https://twitter.com/${HANDLE}/`,
+    Glyph: Twitter,
+  },
+]
+---
+
+<section
+  class="news section"
+  id="news"
+  data-region
+  aria-labelledby="news-title"
+>
+  <div class="container inner">
+    <div class="text">
+      <h2 class="headline" id="news-title" data-sweep>
+        Следите за нашими новостями
+      </h2>
+
+      <p class="lead">
+        Подписывайтесь на <b class="tag">@conquest_watch</b> в соцсетях и узнавайте
+        о новинках и акциях первыми.
+      </p>
+
+      <ul class="socials">
+        {
+          SOCIALS.map((social) => (
+            <li>
+              <a
+                class="social"
+                href={social.href}
+                aria-label={social.label}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <social.Glyph class={`social-glyph glyph-${social.key}`} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="collage" data-reveal="up" data-reveal-stagger>
+      <Image
+        class="photo photo-top"
+        src={photo1}
+        alt="Часы на руке над водой"
+        widths={[242, 484]}
+        quality={88}
+        sizes="(width >= 1024px) 21vw, 45vw"
+        loading="lazy"
+      />
+      <Image
+        class="photo photo-bottom"
+        src={photo2}
+        alt="Часы на песке у берега"
+        widths={[242, 484]}
+        quality={88}
+        sizes="(width >= 1024px) 21vw, 45vw"
+        loading="lazy"
+      />
+      <Image
+        class="photo photo-side"
+        src={photo3}
+        alt="Часы на руке в вязаном рукаве"
+        widths={[377, 754]}
+        quality={88}
+        sizes="(width >= 1024px) 32vw, 50vw"
+        loading="lazy"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .inner {
+    display: grid;
+    gap: 32px;
+  }
+
+  .lead {
+    max-inline-size: 376px;
+    margin-block-start: 20px;
+    font-size: 16px;
+    line-height: 27px;
+    color: var(--color-text-strong);
+  }
+
+  .tag {
+    font-weight: 700;
+    color: #262421;
+  }
+
+  .socials {
+    display: flex;
+    gap: 4px;
+    align-items: flex-end;
+    margin-block-start: 32px;
+  }
+
+  .social {
+    display: grid;
+    place-content: center;
+    inline-size: 44px;
+    block-size: 44px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .social:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: -6px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .social:hover {
+      opacity: 0.6;
+    }
+  }
+
+  .social:active {
+    opacity: 0.45;
+    transition-duration: 90ms;
+  }
+
+  .glyph-instagram {
+    inline-size: 23px;
+    block-size: 22.78px;
+  }
+
+  .glyph-facebook {
+    inline-size: 12px;
+    block-size: 20.88px;
+  }
+
+  .glyph-twitter {
+    inline-size: 22px;
+    block-size: 17.08px;
+  }
+
+  .collage {
+    display: grid;
+    grid-template-columns: minmax(0, 242fr) minmax(0, 377fr);
+    grid-template-rows: minmax(0, 228fr) minmax(0, 222fr);
+    gap: 10px;
+    aspect-ratio: 629 / 460;
+  }
+
+  .photo {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .photo-top {
+    object-position: 50% 13%;
+  }
+
+  .photo-bottom {
+    object-position: 6% 50%;
+  }
+
+  .photo-side {
+    grid-area: 1 / 2 / 3 / 3;
+  }
+
+  @media (width >= 1024px) {
+    .inner {
+      grid-template-columns: minmax(0, 542fr) minmax(0, 629fr);
+      gap: 0;
+    }
+
+    .text {
+      padding-block-start: 140px;
+      padding-inline-end: 40px;
+    }
+
+    .lead {
+      margin-block-start: 40px;
+    }
+
+    .socials {
+      margin-block-start: 105px;
+    }
+  }
+</style>

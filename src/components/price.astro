@@ -1,0 +1,29 @@
+---
+import Ruble from '@/img/icons/ruble.svg'
+
+interface Props {
+  class?: string | undefined
+}
+
+const { class: className } = Astro.props
+---
+
+<span class:list={['price', className]}>
+  <slot />
+  <Ruble class="sign" role="img" aria-label="рублей" />
+</span>
+
+<style>
+  .price {
+    display: inline-flex;
+    gap: 0.3em;
+    align-items: baseline;
+    white-space: nowrap;
+  }
+
+  .sign {
+    flex: none;
+    inline-size: 0.536em;
+    block-size: 0.75em;
+  }
+</style>

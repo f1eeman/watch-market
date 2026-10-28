@@ -1,0 +1,186 @@
+---
+import { Image } from 'astro:assets'
+import Price from '@/components/price.astro'
+
+import type { Product } from '@/data/products'
+
+interface Props {
+  product: Product
+  index: number
+  href?: string
+}
+
+const { product, index, href = '/product/' } = Astro.props
+
+const { brand, price, image, alt, crop } = product
+
+const gradient = `showcase-ring-${String(index)}`
+---
+
+<a class="card" {href} data-tilt data-stroke-scene>
+  <span class="head">
+    <span class="brand">{brand}</span>
+    <Price class="price">{price}</Price>
+  </span>
+
+  <span class="stage">
+    <svg
+      class="ring"
+      viewBox="0 0 313 313"
+      fill="none"
+      aria-hidden="true"
+      data-parallax-rotate="16"
+    >
+      <circle
+        cx="156.5"
+        cy="156.5"
+        r="156"
+        stroke={`url(#${gradient})`}
+        data-stroke></circle>
+      <defs>
+        <linearGradient
+          id={gradient}
+          x1="313"
+          y1="161"
+          x2="0"
+          y2="163"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="var(--color-accent-line)"></stop>
+          <stop
+            offset="1"
+            stop-color="var(--color-accent-line)"
+            stop-opacity="0"></stop>
+        </linearGradient>
+      </defs>
+    </svg>
+    <span class="frame">
+      <Image
+        class="shot"
+        src={image}
+        {alt}
+        widths={[313, 626]}
+        sizes="(width >= 1024px) 313px, (width >= 640px) 42vw, 80vw"
+        quality={88}
+        loading="lazy"
+        style={`inset-inline-start:${crop.left};inset-block-start:${crop.top};inline-size:${crop.width};block-size:${crop.height}`}
+      />
+    </span>
+  </span>
+
+  <span class="more">
+    <span class="rule" aria-hidden="true"></span>
+    <span class="more-label">Подробнее</span>
+  </span>
+</a>
+
+<style>
+  .card {
+    position: relative;
+    display: block;
+    aspect-ratio: 370 / 467;
+    padding: 40px;
+    background-color: var(--color-surface);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .brand {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.03em;
+    color: var(--color-text-soft);
+  }
+
+  .price {
+    font-family: var(--font-figure);
+    font-size: 12px;
+    line-height: 1;
+    color: var(--color-text-soft);
+  }
+
+  .stage {
+    position: absolute;
+    inset-inline-start: 7.57%;
+    inset-block-start: 16.92%;
+    inline-size: 84.59%;
+    aspect-ratio: 1;
+  }
+
+  .ring {
+    position: absolute;
+    inset-block-start: -0.64%;
+    inset-inline: 0;
+    inline-size: 100%;
+    aspect-ratio: 1;
+    overflow: visible;
+  }
+
+  .frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .shot {
+    position: absolute;
+    max-inline-size: none;
+    filter: drop-shadow(var(--shadow-photo));
+    transition: translate 180ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .more {
+    position: absolute;
+    inset-block-end: 40px;
+    inset-inline-start: 40px;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+
+  .more .rule {
+    inline-size: 30px;
+  }
+
+  .more-label {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    line-height: 1;
+    color: var(--color-text);
+  }
+
+  .card:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover .shot {
+      translate: 0 -6px;
+    }
+  }
+
+  .card:active .shot {
+    translate: 0 -2px;
+    transition-duration: 90ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shot {
+      transition: none;
+    }
+
+    .card:active .shot,
+    .card:hover .shot {
+      translate: none;
+    }
+  }
+</style>
